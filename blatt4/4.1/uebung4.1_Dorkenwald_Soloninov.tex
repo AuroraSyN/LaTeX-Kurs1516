@@ -1,0 +1,45 @@
+﻿% Dorkenwald, Soloninov
+% Blatt 4, Aufgabe 1;
+
+\documentclass [12pt]{scrartcl}
+\usepackage[ngerman]{babel} 			% Deutsche Sprachanpassungen
+\usepackage[T1]{fontenc}    			% Silbentrennung bei Sonderzeichen
+\usepackage[utf8]{inputenc} 			% Direkte Angabe von Umlauten im Dokument.
+\usepackage{booktabs}			
+\usepackage{multirow}
+
+\begin{document}
+ \begin{table}[htbp]
+  \begin{center}
+    \caption{Gemüse vegfügbarkeit}
+    \centering
+
+    % 5 links, 1 rechts
+    \begin{tabular}{ *{5}{l} *{1}{r}}
+	\toprule
+
+	\multicolumn{1}{l}{Produkt} & \multicolumn{1}{l}{Herkunft}  
+	& \multicolumn{1}{l}{Saisonbegin} & \multicolumn{1}{l}{Saisonende} 
+	& \multicolumn{1}{l}{Handelsklasse} & \multicolumn{1}{r}{vegfürbar} \\
+	
+	\cmidrule(lr){1-6}
+	Auberginen & Frankreich & Juli & September & I & -  \\
+	\cmidrule(lr){1-6}
+	Esskastanien & Frankreich & September & September & I & - \\ 
+	\cmidrule(lr){1-6}
+	Feldsalat & Deutschland & Oktober & Februar & II & ja \\
+	\cmidrule(lr){1-6}
+	Kürbis & Deutschland & August & Dezember & I & ja \\
+	\cmidrule(lr){1-6}
+	Rote Beete & Italien & September & Februar & I  & ja \\
+	\cmidrule(lr){1-6}
+	Zucchini & Spanien & Juni & Oktober & II & - \\
+	\cmidrule(lr){1-6}
+	Zwiebeln & Deutschland & Mai & Oktober & -  & - \\
+	\bottomrule
+    \end{tabular}
+
+  \end{center}
+ \end{table}
+
+\end{document}

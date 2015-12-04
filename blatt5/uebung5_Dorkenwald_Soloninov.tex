@@ -1,0 +1,40 @@
+% Dorkenwald, Soloninov
+% Blatt 5;
+
+\documentclass [12pt]{scrartcl}
+\usepackage[ngerman]{babel} 			% Deutsche Sprachanpassungen
+\usepackage[T1]{fontenc}    			% Silbentrennung bei Sonderzeichen
+\usepackage[utf8]{inputenc} 			% Direkte Angabe von Umlauten im Dokument.
+\usepackage{booktabs}			
+\usepackage{siunitx}
+\usepackage{caption}
+
+
+
+\newcommand \zeit [2] {Um #1 Uhr und  #2 Minuten }
+
+\begin{document}
+\begin{table}[htbp]
+  \begin{center}
+    
+    \caption*{Adventskalorien}
+    \begin{tabular}{ll S[table-number-alignment = right,
+    				table-format=2.3]  }
+    
+      \toprule
+    
+      \multicolumn{1}{l}{Uhrzeit} & \multicolumn{1}{l}{Speise}  & \multicolumn{1}{S}{{Brennwert} \si{[\kilo\joule]}} \\
+    
+      \midrule 
+    
+      \zeit{19}{45}   & 150g gemischter Salat   & 226.5(2) \\ % je100g  = 151kJ
+      \zeit{20}{00}   & 2x Beef-steak    & 1112(5)  \\  % je 556 kJ
+      \zeit{21}{00}   & 400g Kirschkuchen & 4480(17)  \\ % je 100g 1.120kJ
+    
+      \bottomrule
+    
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\end{document}

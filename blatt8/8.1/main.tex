@@ -1,0 +1,25 @@
+% !TEX program = xelatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrreprt}
+
+\usepackage{blindtext,booktabs,color,nicefrac,polyglossia,setspace,xltxtra,yfonts,hyperref,}
+
+\setmainlanguage{german}
+
+\setromanfont[Mapping=tex-text]{Linux Libertine O}
+\setsansfont[Mapping=tex-text]{Linux Biolinum O}
+
+\onehalfspacing
+
+\begin{document}
+
+\subsection*{Abstract}
+Dieses Dokument dient der Übung des Satzes von umfangreichen Projekten in \LaTeX\index{LaTeX@\LaTeX}. Es gehört zum achten Übungszettel des \LaTeX-Kurses im Wintersemester 2015\,/\,16. Inhaltlich hat es so ziemlich nichts zu bieten, es könnte aber interessant sein, sich den zugehörigen Sourcecode mal anzusehen, da er eine Menge interessanter \LaTeX-Kommandos enthält.
+
+\input{chapter1}
+\include{../inhalte/chapter2}		% add path	
+\input{chapter4}				% remove space
+
+\end{document}

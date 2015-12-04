@@ -1,0 +1,47 @@
+% Dorkenwald, Soloninov
+% Blatt 6, Aufgabe 1
+\documentclass{article}
+
+% Default
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% usepackage
+\usepackage{
+	blindtext,
+	graphicx,
+	subcaption
+}
+
+\begin{document}
+% \blindtext
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth, angle=0]{Prepare}
+	\caption{Prepare}
+\end{figure}
+
+% Aufgabe 6.1d
+\blindtext
+
+% Aufgabe 6.1c
+\begin{figure}[b]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=\textwidth]{take-it}
+		\caption{Just do it}
+	\end{subfigure}%
+	%\blindtext
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=.9\textwidth]{go-away}
+		\caption{and go away}
+	\end{subfigure}
+
+	\caption{Do}
+	
+	%\blindtext
+
+\end{figure}
+% EOFs
+\end{document}

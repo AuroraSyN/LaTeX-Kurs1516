@@ -1,0 +1,43 @@
+% Dorkenwald, Soloninov
+% Blatt 6.2;
+
+\documentclass [12pt]{scrartcl}
+\usepackage[ngerman]{babel} 			% Deutsche Sprachanpassungen
+\usepackage[T1]{fontenc}    			% Silbentrennung bei Sonderzeichen
+\usepackage[utf8]{inputenc} 			% Direkte Angabe von Umlauten im Dokument.
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}[
+% Event style
+%    every node/.style={thick, draw},
+    event/.style={fill=green!25,text width=2cm, text centered, thick, draw,align=center},
+% Children and edges style
+    edge from parent/.style={very thick,draw=black!70},
+    edge from parent path={(\tikzparentnode.south) -- ++(0,-.5cm) -| (\tikzchildnode.north)},
+    level 1/.style={sibling distance=9.5cm, nodes=event},
+    level 2/.style={sibling distance=4cm},
+    level 3/.style={sibling distance=3cm}
+]
+% a): b:) c:)
+  \node[event] {Bier}
+    child { node {obergärig } 
+    	child { node {Alt} { 
+    		child { node {Hansa\\ Alt  }} 
+    	}} 	
+    	child { node {Kölsch} { 
+    		child { node {ABD \\Kölsch}}
+    		child { node {Helios}}
+    	}}
+    	child { node {Weizen} 
+    		child { node {Hefe-\\weizen}}
+    	}}
+    child { node {untergärig} 
+    	child { node {Märzen} {
+    		child { node {Auerbräu }}
+    	}}
+    	child { node {Pils }{
+    		child {node { Bitburger}}
+    	}}};
+\end{tikzpicture}
+\end{document}
