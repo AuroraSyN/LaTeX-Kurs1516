@@ -1,0 +1,63 @@
+% !TEX program = xelatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+%Dorkenwald, Soloninov
+%Blatt 8
+
+\documentclass{scrreprt}
+
+\input{./header.tex}		% Header
+
+\onehalfspacing
+
+%path
+\newcommand*{\Path}{./inhalte}
+
+\begin{document}
+
+	%add Schmutztitel
+	\extratitle{Schmutztitel}
+
+	%add Title
+	\title{Titel des Dokumentes}
+	\author{Dorkenwald,Soloninov}
+	\date{10.12.2015}
+	\maketitle
+
+	%add Inhaltsverzeichnis
+	\tableofcontents
+	\newpage
+
+	\subsection*{Abstract}
+Dieses Dokument dient der Übung des Satzes von umfangreichen Projekten in \LaTeX\index{LaTeX@\LaTeX}. Es gehört zum achten Übungszettel des \LaTeX-Kurses im Wintersemester 	2015\,/\,16. Inhaltlich hat es so ziemlich nichts zu bieten, es könnte aber interessant sein, sich den zugehörigen Sourcecode mal anzusehen, da er eine Menge interessanter \LaTeX-Kommandos enthält.
+
+	%add Path
+	\input{\Path/chapter1.tex}
+	\input{\Path/chapter2.tex}		
+	\input{\Path/chapter4.tex}
+	
+	%add Code
+	Da sind die code fur aufgabe 8.2.d
+	\lstinputlisting[label=RatedProvider,caption=A Provider for RatedMovies]{sourceCode/RatedMoviesContentProvider.java} 
+	\lstinputlisting[label=MovieProvider,caption=A Provider for Movies]{sourceCode/MoviesContentProvider.java} 
+	
+	%add Somthing, Aufgabe 8.2.e
+	
+	Bei Korrektur wird es so : 
+
+	\includemedia[activate=onclick,width=1 \textwidth]
+	{\includegraphics{./swf/my_tex_start.jpg}}{./swf/my_tex.swf}
+
+	%appendix
+	\begin{appendix}
+		\chapter*{Anhang}
+		\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+		\listoffigures
+		\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+		\listoftables
+		\addcontentsline{toc}{chapter}{List of Listings}
+	\end{appendix}
+
+\end{document}	
+
