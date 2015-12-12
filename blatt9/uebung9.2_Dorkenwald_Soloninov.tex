@@ -1,0 +1,40 @@
+% Dorkenwald, Soloninov
+% Blatt 7.2;
+
+\documentclass{scrartcl}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[all,cmtip]{xy}
+
+\usepackage{color}
+\usepackage{amsthm,amsmath}
+
+\newtheorem*{thm}{Proof}
+
+\DeclareMathOperator{\Ker}{Ker \ \delta \subset Im \  g_*}
+\DeclareMathOperator{\dz}{fz' = fd'u' = dfu'}
+\DeclareMathOperator{\ds}{(z-fu')=0,}
+
+\newcommand \rr {\ar@[red][r]}					% arrow red right 		: rr
+\newcommand \ddj {\ar@{^{(}->}[d]}				% arrow down with ( 	: ddj
+\newcommand \dd {\ar@{->>}[d]}				% arrow down with >>	: dd
+\newcommand \db[2] {\ar@[blue][d]#1{\color{blue}#2}}	% blue arrow down 	: db
+\newcommand \rb[2]{ \ar@[blue][r]#1{\color{blue}#2}}	% blue arrow right 		: rb
+
+\begin{document}
+\section*{Shake Lemma}
+\begin{thm}
+It is a routine verification that the class of z' mod Im d' is in-dependent of the choices made when taking inverse images, whence defining the map 5. The proof of the exactness of the sequence is then routine, and consists in chasing around diagrams. It should be carried out in full detail by the reader who wishes to acquire a feeling for this type of triviality. As an example, we shall prove that $$\Ker$$ where $g_*$ is the induced map on kernels. Suppose the image of z'' is 0 in Coker d'. By definition, there exists u' $\epsilon$ M' such that $z' = d'u'$. Then $$\dz$$ by commutativity. Hence $$\ds$$ and $z - fu'$ is in the kernel of d. But $g(z - fu') = gz = z"$. This means that z" is in the image of $g_*$ as desired. All the remaining cases of exactness will be left to the reader.\\ 
+The original snake diagram may be completed by writing in the kernels and cokernels as follows (whence the name of the lemma):
+ 		
+$$ \xymatrix{ 
+		& Ker(d) \ddj \rr &  Ker(\delta) \ddj \rr & Ker(\partial) \ddj  \ar@{.>}@[red][llddd] \\   
+		& A_1 \db_{d} \rb^{\varphi_1} &  B_1 \db^{\delta} \ar@{->>}@[blue][r]^{\color{blue}\psi_1} & C_1 \db^{\partial}  \ar@[blue][r]&  0\\ 
+		0\ar@[blue][r] & A_0 \dd \ar@{>->}@[blue][r]_{\color{blue}\varphi_0} & B_0 \dd \rb_{\psi_0}& C_0 \dd \\
+		& Koker(d) \rr & Koker (\delta) \rr & Koker (\partial)
+		} $$
+\end{thm}
+
+\end{document}

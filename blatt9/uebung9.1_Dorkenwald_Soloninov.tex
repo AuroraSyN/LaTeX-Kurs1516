@@ -1,0 +1,63 @@
+% Dorkenwald, Soloninov
+% Blatt 7.1;
+
+\documentclass{scrartcl}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{pgfplots,tikz,xcolor}
+\pgfplotsset{compat=1.3}
+\pgfplotsset{grid style={dashed, magenta}}
+\usetikzlibrary{patterns}
+
+\begin{document}
+
+\section*{Übung 7.1 Daten darstellen mit pgfplots}
+
+
+\subsection*{Wie finden Sie Himbeeren?}
+\begin{tikzpicture}
+	\begin{axis}[ xbar,
+		width=14cm, height = 5cm,
+		enlarge y limits=0.2,
+		enlarge x limits=0,
+		xlabel={Anzahl der Antworten},
+		symbolic y coords = {furchtbar, meh, ganz gut, genial, keine Ang.},
+		ytick=data, grid ]
+		\addplot[ draw=black, pattern=horizontal lines gray ] 
+		coordinates {(9,furchtbar) (1,meh) (2,ganz gut) (186,genial) (0,keine Ang.)};
+	\end{axis}
+\end{tikzpicture}
+
+\subsection*{Mögen Sie Tanzen?}
+
+\begin{tikzpicture}
+	\begin{axis}[xbar,
+		width=14cm, height = 5cm,
+		enlarge y limits=0.2,
+		enlarge x limits=0,
+		xlabel={Anzahl der Antworten},
+		symbolic y coords = {furchtbar, meh, ganz gut, genial, keine Ang.},
+		ytick=data, grid ]
+		\addplot[ draw=black, pattern=horizontal lines gray ] 
+		coordinates {(32,furchtbar) (63,meh) (52,ganz gut) (49,genial) (2,keine Ang.)};
+	\end{axis}
+\end{tikzpicture}
+
+\subsection*{Was halten Sie von Topfpflanzen?}
+\begin{tikzpicture}
+	\begin{axis}[xbar,
+		width=14cm, height = 5cm,
+		enlarge y limits=0.2,
+		enlarge x limits=0,
+		xlabel={Anzahl der Antworten},
+		symbolic y coords = {furchtbar, meh, ganz gut, genial, keine Ang.},
+		ytick=data,grid ]
+		\addplot[ draw=black, pattern=horizontal lines gray] 
+		coordinates {(28,furchtbar) (17,meh) (12,ganz gut) (26,genial) (115,keine Ang.)};
+	\end{axis}
+\end{tikzpicture}
+
+\end{document}
