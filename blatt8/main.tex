@@ -10,14 +10,15 @@
 \input{./header.tex}		% Header
 
 \onehalfspacing
-
 %path
 \newcommand*{\Path}{./inhalte}
+
+\makeindex
 
 \begin{document}
 
 	%add Schmutztitel
-	\extratitle{Schmutztitel}
+	\extratitle{Schmutztitel \\ Dorkenwald,Soloninov}
 
 	%add Title
 	\title{Titel des Dokumentes}
@@ -39,11 +40,13 @@ Dieses Dokument dient der Übung des Satzes von umfangreichen Projekten in \LaTe
 	
 	%add Code
 	Da sind die code fur aufgabe 8.2.d
-	\lstinputlisting[label=RatedProvider,caption=A Provider for RatedMovies]{sourceCode/RatedMoviesContentProvider.java} 
-	\lstinputlisting[label=MovieProvider,caption=A Provider for Movies]{sourceCode/MoviesContentProvider.java} 
+	\lstinputlisting[label=RatedProvider,caption=A Provider for RatedMovies]{sourceCode/RatedMoviesContentProvider.java}
+	\label{lst:RatedProvider}
+	\lstinputlisting[label=MovieProvider,caption=A Provider for Movies]{sourceCode/MoviesContentProvider.java}
+	\label{lst:MovieProvider}
 	
 	%add Somthing, Aufgabe 8.2.e
-	
+	\newpage
 	Bei Korrektur wird es so : 
 
 	\includemedia[activate=onclick,width=1 \textwidth]
@@ -52,11 +55,14 @@ Dieses Dokument dient der Übung des Satzes von umfangreichen Projekten in \LaTe
 	%appendix
 	\begin{appendix}
 		\chapter*{Anhang}
+		\addcontentsline{toc}{chapter}{index}
+		\printindex
 		\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 		\listoffigures
 		\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
 		\listoftables
 		\addcontentsline{toc}{chapter}{List of Listings}
+		\lstlistoflistings
 	\end{appendix}
 
 \end{document}	
