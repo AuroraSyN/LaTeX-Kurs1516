@@ -1,0 +1,116 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.5 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{none}{none}
+    \entry{UBHD-67850616}{book}{}
+      \name{author}{1}{}{%
+        {{hash=600fde40d6f81575d386f40312423977}{Merkl}{M\bibinitperiod}{Rainer}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {ger}%
+      }
+      \list{location}{1}{%
+        {Weinheim}%
+      }
+      \list{publisher}{1}{%
+        {Wiley-VCH}%
+      }
+      \strng{namehash}{600fde40d6f81575d386f40312423977}
+      \strng{fullhash}{600fde40d6f81575d386f40312423977}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3., vollst. überarb. und erw. Aufl.}
+      \field{isbn}{978-3-527-33820-7 ; 3-527-33820-9 ; 978-3-527-68586-8 ; 978-3-527-68588-2 ; 978-3-527-68587-5}
+      \field{library}{UB [Signatur:LN-U 10-12084::(3)]}
+      \field{subtitle}{Grundlagen, Algorithmen, Anwendungen}
+      \field{title}{Bioinformatik}
+      \field{year}{2015}
+      \field{pages}{XVII\bibrangessep 608 S.}
+      \range{pages}{-1}
+      \keyw{(s)Bioinformatik ; (s)Bioinformatik}
+    \endentry
+    \entry{UBHD-67739454}{inproceedings}{}
+      \name{editor}{2}{}{%
+        {{hash=fdd658aa1b248efe356d1ffdde677ff9}{Brown}{B\bibinitperiod}{Dan\bibnamedelima [Hrsg.]}{D\bibinitperiod\bibinitdelim [\bibinitperiod}{}{}{}{}}%
+        {{hash=752bcfb3057b40f6aa8710bfbbd35a68}{Morgenstern}{M\bibinitperiod}{Burkhard\bibnamedelima [Hrsg.]}{B\bibinitperiod\bibinitdelim [\bibinitperiod}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {eng}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{organization}{1}{%
+        {WABI <14., 2014, Breslau>}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5bab5e833801c4469410a686e944c67d}
+      \strng{fullhash}{5bab5e833801c4469410a686e944c67d}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{editor}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-662-44752-9 ; 978-3-662-44753-6}
+      \field{library}{UB [Signatur:LN-U 10-17705]}
+      \field{series}{Lecture Notes in Computer Science ; 8701}
+      \field{subtitle}{14th international workshop}
+      \field{title}{Algorithms in bioinformatics}
+      \field{year}{2014}
+      \field{pages}{XIII\bibrangessep 367 S.}
+      \range{pages}{-1}
+      \keyw{(s)Bioinformatik / (s)Algorithmus / (f)Kongress / (g)Breslau <2014>}
+    \endentry
+    \entry{UBHD-67647031}{book}{}
+      \name{editor}{1}{}{%
+        {{hash=0aef20681c23feb7d2c3b69577512491}{Trent}{T\bibinitperiod}{Ronald\bibnamedelimb J.\bibnamedelimi [Hrsg.]}{R\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim [\bibinitperiod}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {eng}%
+      }
+      \list{location}{1}{%
+        {New York ; Heidelberg [u.a.]}%
+      }
+      \list{publisher}{1}{%
+        {Humana Press}%
+      }
+      \strng{namehash}{0aef20681c23feb7d2c3b69577512491}
+      \strng{fullhash}{0aef20681c23feb7d2c3b69577512491}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{editor}
+      \field{labeltitlesource}{title}
+      \field{edition}{2. ed.}
+      \field{isbn}{978-1-4939-0846-2 ; 978-1-4939-0847-9}
+      \field{library}{UB [Signatur:2014 H 977]}
+      \field{series}{Methods in molecular biology ; 1168 ; Springer protocols}
+      \field{title}{Clinical bioinformatics}
+      \field{year}{2014}
+      \field{pages}{XI\bibrangessep 326 S.}
+      \range{pages}{-1}
+      \keyw{(s)Klinische Medizin / (s)Bioinformatik / (f)Aufsatzsammlung}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+
