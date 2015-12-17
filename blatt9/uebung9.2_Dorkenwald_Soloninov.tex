@@ -1,40 +1,72 @@
 % Dorkenwald, Soloninov
-% Blatt 7.2;
+% Blatt 9.2;
 
 \documentclass{scrartcl}
 
-\usepackage[ngerman]{babel}
+% Language Packages
+\usepackage[main=ngerman,english, italian, russian]{babel}
+\usepackage{CJKutf8} % für Chinesische sprache + @fix für russisch \usepackage{CJK} geht nicht mit Russisch!!!
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[all,cmtip]{xy}
-
-\usepackage{color}
-\usepackage{amsthm,amsmath}
-
-\newtheorem*{thm}{Proof}
-
-\DeclareMathOperator{\Ker}{Ker \ \delta \subset Im \  g_*}
-\DeclareMathOperator{\dz}{fz' = fd'u' = dfu'}
-\DeclareMathOperator{\ds}{(z-fu')=0,}
-
-\newcommand \rr {\ar@[red][r]}					% arrow red right 		: rr
-\newcommand \ddj {\ar@{^{(}->}[d]}				% arrow down with ( 	: ddj
-\newcommand \dd {\ar@{->>}[d]}				% arrow down with >>	: dd
-\newcommand \db[2] {\ar@[blue][d]#1{\color{blue}#2}}	% blue arrow down 	: db
-\newcommand \rb[2]{ \ar@[blue][r]#1{\color{blue}#2}}	% blue arrow right 		: rb
-
+	
 \begin{document}
-\section*{Shake Lemma}
-\begin{thm}
-It is a routine verification that the class of z' mod Im d' is in-dependent of the choices made when taking inverse images, whence defining the map 5. The proof of the exactness of the sequence is then routine, and consists in chasing around diagrams. It should be carried out in full detail by the reader who wishes to acquire a feeling for this type of triviality. As an example, we shall prove that $$\Ker$$ where $g_*$ is the induced map on kernels. Suppose the image of z'' is 0 in Coker d'. By definition, there exists u' $\epsilon$ M' such that $z' = d'u'$. Then $$\dz$$ by commutativity. Hence $$\ds$$ and $z - fu'$ is in the kernel of d. But $g(z - fu') = gz = z"$. This means that z" is in the image of $g_*$ as desired. All the remaining cases of exactness will be left to the reader.\\ 
-The original snake diagram may be completed by writing in the kernels and cokernels as follows (whence the name of the lemma):
- 		
-$$ \xymatrix{ 
-		& Ker(d) \ddj \rr &  Ker(\delta) \ddj \rr & Ker(\partial) \ddj  \ar@{.>}@[red][llddd] \\   
-		& A_1 \db_{d} \rb^{\varphi_1} &  B_1 \db^{\delta} \ar@{->>}@[blue][r]^{\color{blue}\psi_1} & C_1 \db^{\partial}  \ar@[blue][r]&  0\\ 
-		0\ar@[blue][r] & A_0 \dd \ar@{>->}@[blue][r]_{\color{blue}\varphi_0} & B_0 \dd \rb_{\psi_0}& C_0 \dd \\
-		& Koker(d) \rr & Koker (\delta) \rr & Koker (\partial)
-		} $$
-\end{thm}
+%9.2.a
+\section{Vor- und Nachteile}
+Positiv ist, dass es sehr einfach ist die Sprache zu wechseln. Auch scheint das Konzept mit einer Hauptsprache sehr sinnvoll. Befehle wie \textbackslash today setzen sich automatisch an die aktuelle Sprache an, was wahrscheinlich das größte Vorteil ist. Will man z.B auf Chinesisch schreiben , dann stößt man auf massive Probleme, weil weder babel noch polyglossia die Sprache des Landes der Mitte als relevant genug erachten um diese in ihren Fundus aufzunehmen. Man muss sich infolgedessen mit komischen Hilfskonstrukten bedienen, die meiner Erkenntnis nach nicht wirklich kompatibel mit babel sind und Geraffel erzeugen. \\
+\\
+%9.2.b
+\begin{otherlanguage}{english}
+	\section*{English language}
+	Winter morning\\
+	Cold frost and sunshine: day of wonder! \\
+	But you, my friend, are still in slumber — \\
+	Wake up, my beauty, time belies: \\
+	You dormant eyes, I beg you, broaden \\
+	Toward the northerly Aurora, \\
+	As though a northern star arise! \\
+\end{otherlanguage}
+
+\begin{otherlanguage}{italian}
+	\section*{Lingua italiana} 
+	A mio padre \\
+	Ti sento salire le scale \\ 
+	e vorrei correrti incontro \\
+	per abbracciarti stretto. \\
+	Vigile e affettuoso \\
+	tu mi guidi e mi proteggi \\
+	e mi spiani la via. \\ 
+	Quando mi tieni per mano \\
+	io cammino sicura. \\
+\end{otherlanguage}
+\newpage
+\begin{CJK}{UTF8}{min}
+	\section*{中 國}
+	七哀诗 \\
+	明月照高楼,流光正徘徊。\\
+	上有愁思妇,悲叹有余哀。\\
+	借问叹者谁?云是宕子妻。\\
+	君行逾十年,孤妾常独栖。\\
+	君若清路尘,妾若浊水泥。\\
+	浮沉各异势,会合何时谐?  \\
+	愿为西南风,长逝入君怀。\\
+	君怀良不开,贱妾当何依?  \\
+\end{CJK}
+
+
+%9.2.с 
+%P.s : Russisch ist mein Muttersprache!
+\begin{otherlanguage}{russian}
+	\section*{Русския Язык}
+	Даже не знаю о чем тут написать. Наверное напишу я это : \\
+	\\
+	Мороз и солнце; день чудесный!\\
+	Еще ты дремлешь, друг прелестный - \\
+	Пора, красавица, проснись: \\
+	Открой сомкнуты негой взоры \\
+	Навстречу северной Авроры, \\
+	Звездою севера явись!  \\
+	... \\ (c) А.С. Пушкин. \\
+\end{otherlanguage}
+
 
 \end{document}
