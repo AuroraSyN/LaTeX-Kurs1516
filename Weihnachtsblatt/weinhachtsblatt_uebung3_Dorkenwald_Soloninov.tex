@@ -1,0 +1,71 @@
+%Weihnachtsblatt, Aufgabe 3
+%Dorkenwald,Soloninov
+
+\documentclass{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ifthen}
+
+\usepackage{advdate}    % Advancing/saving dates
+\usepackage{datetime}   % Dates formatting
+\usepackage{datenumber} % Counters for dates
+
+\usepackage{datenumber}
+\usepackage{calc}
+
+\newcounter{datetoday}
+\newcounter{diffyears}
+\newcounter{diffmonths}
+\newcounter{diffdays}
+
+\newcommand{\difftoday}[3]{%
+      \setmydatenumber{datetoday}{\the\year}{\the\month}{\the\day}%
+      \setmydatenumber{diffdays}{#1}{#2}{#3}%
+      \addtocounter{diffdays}{-\thedatetoday}%
+      \ifnum\value{diffdays}>0
+        \def\diffbefore{}%
+        \def\diffafter{}%
+      \else
+        \def\diffbefore{}%
+        \def\diffafter{ago}%
+        \setcounter{diffdays}{-\value{diffdays}}%
+      \fi
+      \setcounter{diffyears}{\value{diffdays}/365}%
+      \setcounter{diffdays}{\value{diffdays}-365*\value{diffyears}}%
+      \setcounter{diffmonths}{\value{diffdays}/30}%
+      \setcounter{diffdays}{\value{diffdays}-30*\value{diffmonths}}%
+      %
+      \diffbefore
+      \ifnum\value{diffyears}=0
+      \else
+        \ifnum\value{diffyears}>1
+            \thediffyears\space years,
+        \else
+            \thediffyears\space year,
+        \fi
+      \fi
+      \ifnum\value{diffmonths}=0
+      \else
+        \ifnum\value{diffmonths}>1
+            \thediffmonths\space months
+        \else
+            \thediffmonths\space month
+        \fi
+      \fi
+      \diffafter
+}
+
+\newcommand\LastYear{%
+  \advance\year by -1 \the\year\advance\year by 1}
+
+
+\begin{document}
+
+\ifthenelse{\the\month = 12}{Bald ist Weihnacht \the\year}{Weihnacht von \LastYear\  ist  vorbei} \\
+
+Bis Weihnacht \the\year\ ist noch ca. \difftoday{2016}{12}{24}
+
+
+\end{document}

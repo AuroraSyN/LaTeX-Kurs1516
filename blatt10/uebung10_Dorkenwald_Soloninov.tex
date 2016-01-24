@@ -1,0 +1,130 @@
+% !TEX program = pdfLaTeX
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+
+%Blatt 10
+%Soloninov, Dorkenwald
+
+\documentclass{beamer} %% normal document
+%\documentclass[notes]{beamer} %% notes in normal document
+%\documentclass[draft,notes]{beamer} %% draft with notes
+%\documentclass[handout]{beamer} %% handout
+
+\usepackage[ngerman]{babel}
+\usepackage{showexpl} 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{caption}
+
+\usepackage{enumitem}
+
+%% usefull for handout with blank lines
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{2 on 1 with notes}[a4paper,border shrink=5mm]
+
+%% usefull for presentation
+%\setbeameroption{show notes on secondscreen=left}
+
+\definecolor{bettergreen}{rgb}{.1,.7,.1}
+
+\usetheme{Dresden}
+\usecolortheme[named=bettergreen]{structure}
+\useoutertheme{split}
+\setbeamertemplate{caption}[numbered]
+\captionsetup{labelformat=simple,font=scriptsize,labelfont=scriptsize}
+
+\newcommand*\oldmacro{}%
+\let\oldmacro\insertshorttitle%
+\renewcommand*\insertshorttitle{%
+	\oldmacro\hfill%
+	\insertframenumber\,/\,\inserttotalframenumber}
+
+\title[]{}
+
+
+\author{
+	Soloninov Aleksandr, Dorkenwald Michael\\
+}
+\institute[IFI]{
+	Vorlesung: LaTex-Kurse\\
+	Universität Heidelberg\\
+	Präsentation ist von ISW team - b03 WS 15/16  geänder für LaTeX-Kurs 15/16
+}
+
+\begin{document}
+	\begin{frame}[plain]
+		\titlepage
+		\note{ }
+	\end{frame}
+
+	%%\section*{Teampräsentation}
+	\begin{frame}{Teampräsentation}
+		\center{\huge LaTeX, Blatt 10}
+		\vspace{2em}
+		\begin{itemize}
+			\item Soloninov Aleksandr\\
+				B.Sc. Angewandte Informatik, 3. Fachsemester
+			\item Dorkenwald Michael\\
+				B.Sc. Physic, 5. Fachsemester\\
+		\end{itemize}
+	\end{frame}
+	\section{Bisheriger Zustand}
+	\begin{frame}{Bisheriger Zustand}
+		\begin{figure}[H] 
+			\centering
+			\includegraphics[width=0.85\linewidth]{uebung10_Soloninov_Dorkenwald}
+		\end{figure}
+	\end{frame}
+	
+	\section{Verbesserungsvorschläge}
+	\subsection{Probleme und Lösungen}
+	\begin{frame}{Probleme und Lösungen}
+		\begin{columns}[c]
+			\begin{column}{0.5\textwidth}
+				\begin{itemize}
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} Viel manuelle Eingaben nötig
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} Angaben möglicherweise unvollständig
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} Angaben möglicherweise unkorrekt
+				\end{itemize}
+			\end{column}
+			\pause
+			\begin{column}{0.5\textwidth}
+				\begin{itemize}
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} Manuelle Eingabe minimiert
+						\pause
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} Eingabe autovervollständigt
+						\pause
+					\item \includegraphics[height=\baselineskip]{uebung10_Soloninov_Dorkenwald} unkorrekte Eingaben hervorgehoben
+				\end{itemize}
+			\end{column}
+		\end{columns}
+	\end{frame}
+
+
+	\subsection{Umsetzung}
+	\begin{frame}{Umsetzung}
+		\small
+		\begin{tabular}{p{1.7cm} p{2.6cm} p{2.6cm} p{2.3cm} }
+			\textbf{Funktion} & \textbf{Beschreibung} & \textbf{Eingabe} & \textbf{Ausgabe} \pause \\
+			\\
+			Complete & vervollständigt mit IMDB & Titelanfang, orig. Title, Time, Category, IMDB-Url & Array of {Title, IMDB-Url} \pause \\
+			\\
+			Validate & prüft eingegebene Werte & Title, orig.~Title, Category, IMDB-Url, do~not~validate? & rote~Fläche, grüne~Fläche \\
+		\end{tabular}
+	\end{frame}
+
+	\subsection{Verbessertes UI}
+	\begin{frame}{Verbessertes UI}
+		\begin{figure}[H] 
+			\centering
+			\includegraphics[width=0.85\linewidth]{uebung10_Soloninov_Dorkenwald}
+		\end{figure}
+	\end{frame}
+
+	\section{}
+	\begin{frame}
+		\center{\Huge ENDE}
+	\end{frame}
+
+\end{document}
