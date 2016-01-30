@@ -1,0 +1,605 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	pgfplots,
+	xspace,
+}
+
+\usepackage{
+	booktabs,
+	blindtext,
+	subfloat,
+	wrapfig,
+	floatflt,
+	picinpar,
+}
+
+
+\setmainlanguage{german}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+
+%\renewcommand{\sfdefault}{\rmdefault}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{shapes, arrows}
+
+\pgfplotsset{
+	compat=1.3,
+	width=7cm,
+	lua backend=true,
+}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\alert{\texttt{#1}}}}
+\newcommand{\TikZ}{Ti\textit{k}Z}
+
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.8\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann},
+}
+
+\lstset{%
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+}
+
+
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Diagramme}
+\author[Mo]{Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{27. November 2015}
+
+
+\begin{document}
+\MakeShortVerb{|}
+
+\frame{\titlepage}
+
+\begin{frame}{Übersicht}
+	\tableofcontents
+\end{frame}
+
+\section{Allgemeines}
+\begin{frame}{Diagramme}
+\begin{itemize}
+\item Ein Diagramm ist eine grafische Darstellung von Daten, Sachverhalten oder Informationen.
+\item Information sollte dabei im Vordergrund stehen
+\item Diagramme sollten sich in das Dokument einfügen
+\begin{itemize}
+\item passende Dimensionen
+\item Beschriftung in gleicher Schriftart
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Diagramme in \TeX}
+\begin{frame}{Diagramme in \TeX}
+Es existieren diverse spezialisierte Pakete
+\begin{tabular}{rl}
+\pkg{chronosys} & Satz von Zeitstrahlen\\
+\pkg{histogr} & (sehr simple) Histogramme\\
+\pkg{bchart} & einfache Balkendiagramme\\
+\pkg{gnuplottex} & Plots mit gnuplot (siehe Vorlesung Mathematiksatz II)\\
+\pkg{pgfplots} & Umfangreiche Plot-Funktionalität mit \TikZ
+\end{tabular}
+\vfill
+\pause
+\pkg{pgfplots} ist für fast alle Arten von Diagrammen zu empfehlen!
+\end{frame}
+
+\section{pgfplots}
+\begin{frame}[fragile]{pgfplots}
+Konfiguration mittels |\pgfplotsset{|\meta{Optionen}|}|. Paketautor empfiehlt, für zukünftige Kompatbilität, die aktelle Version anzugeben.
+\begin{lstlisting}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.3}
+\end{lstlisting}
+\pause
+\pkg{pgfplots} basiert auf \href{http://ctan.org/pkg/pgf}{\TikZ/PGF} und steht deshalb innerhalb einer |tikzpicture|:
+\begingroup
+\pgfplotsset{scale=0.5}
+\begin{LTXexample}[pos=r, explpreset={}, preset=, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    ...
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\endgroup
+\end{frame}
+
+
+\subsection{Achsen}
+\begin{frame}{Achsentypen}
+Verschiedene Achsentypen verfügbar: \\[1em]
+\texttt{\textbackslash begin\{}\meta{Achsentyp}|\}[|\meta{Optionen}|]|\\
+\quad\meta{Inhalt}\\
+\texttt{\textbackslash end\{}\meta{Achsentyp}|\}|
+
+\vfill
+
+\begin{tabular}{rl}
+|axis| & lineare Koordinatenachsen\\
+|semilogyaxis| & $x$-Achse linear, $y$-Achse logarithmisch\\
+|semilogxaxis| & $x$-Achse logarithmisch, $y$-Achse linear\\
+|loglogaxis| & beide Achsen logarithmisch\\
+|polaraxis| & Polarkoordinaten\footnote{mit |\textbackslash usepgfplotslibrary\{polar\}|}\\
+|smithchart| & Smith-Diagramm\footnote{mit |\textbackslash usepgfplotslibrary\{smithchart\}|}\\
+|ternaryaxis| & Dreiecksdiagramm\footnote{mit |\textbackslash usepgfplotslibrary\{ternary\}|}
+\end{tabular}
+\end{frame}
+
+
+\subsection{Daten}
+\begin{frame}[fragile,t]{Daten hinzufügen}%|\textbackslash addplot|}
+|\addplot [|\meta{Optionen}|] {|\meta{Eingabedaten}|};|\\%\meta{ggf. TikZ-Befehle}|;|\\
+|\addplot+[|\meta{Optionen}|] {|\meta{Eingabedaten}|};|%\meta{ggf. TikZ-Befehle}|;|
+\pdfmarginpar{Während die angegebenen Optionen bei addplot die globalen/bzw. Standardoptionen überschreiben fügt addplot+ die angegebenen Optionen nur den globalen hinzu.}\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot{sin deg(x)};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Koordinaten Eingabe}
+|\addplot [|\meta{Optionen}|] coordinates {|\meta{Koordinaten}|};|\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{loglogaxis}
+    \addplot+[smooth]
+     coordinates {
+      (769, 1.6227e-04)
+      (1793, 4.4425e-05)
+      (4097, 1.2071e-05)
+      (9217, 3.2610e-06)
+      (2.2e5, 2.1E-6)
+      (1e6, 0.00003341)
+      (2.3e7, 0.00131415)
+    };
+  \end{loglogaxis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Nachbearbeitung mit \TikZ}
+|\addplot [|\meta{Optionen}|] {|\meta{Eingabedaten}|} |\meta{ggf. TikZ-Befehle}|;|\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}[xmax=1]
+    \addplot [fill=red] coordinates
+    {(0.1,0.15) (0.2,0.5)
+    (0.3,0.62) (0.5,0.58)
+    (0.6,0.65) (0.7,0.6)
+    (0.9,0.55) (1,0.52)}
+    \closedcycle;
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Daten-Tabellen}
+|\addplot [|\meta{Optionen}|] table [|\meta{Spalten-Auswahl}|] {|\meta{Tabelle}|};|\pdfmarginpar{Tabelle kann dabei entweder eine Datei mit Tabellendaten, oder eine direkt im TeX-File eingegebe Tabelle sein.}
+\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot table [
+      only marks,
+    ] {
+      x    y    myvalue 
+      0.5  0.2  0.25
+      0.2  0.1  1.5
+      0.7  0.6  0.75
+      0.35 0.4  0.125
+      0.65 0.1  2
+    };
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+\begin{frame}[fragile,t]{Daten in externen Dateien}
+|\addplot [|\meta{Optionen}|] table [|\meta{Spalten-Ausw.}|] {|\meta{Dateipfad}|};|\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot [no markers]
+      table
+      [x=time, y=values]
+      {data.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\pause
+Paket \pkg{pgfplotstable} erlaubt das Nachbearbeiten vorhandener Tabellen (z.\,B. Einfügen einer Ausgleichsgerade).
+\end{frame}
+
+\subsection{Beschriftungen}
+\begin{frame}[fragile]{Beschriftungen}
+\begin{tabular}{rll}
+Key & Values & Funktion\\\midrule
+|title| & Text & Titel über dem Diagramm\\
+|x|/|ylabel| & bel. Text & Beschriftung der $x$- bzw. $y$-Achse  \\
+|x|/|ymin|/|max| & Wert & schränkt Achse auf Bereich ein\\
+|mark| & |*|, |x|, |+|, |o|, … & Koordinaten-Marker anpassen\\
+|x|/|ytick| & Liste & Koordinatenstriche explizit angeben\\
+|minor tick num| & Zahl & Anzahl der Zwischenstriche\\
+|grid| & |major|, |minor| & Gitter im Hintergrund einblenden
+\end{tabular}
+\end{frame}
+
+\begin{frame}[fragile,t]{Lengenden}
+|\addlegendentry{|\meta{Beschreibung}|}|\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}
+  \addplot[smooth,mark=*,blue] coordinates {
+    (0,2) (1,3) (3,1)
+  };
+  \addlegendentry{Fall 1}
+  \addplot[smooth,color=red,mark=x] coordinates {
+    (0,0) (1,1) (2,1) (3,2)
+  };
+  \addlegendentry{Fall 2}
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Platzierung der Achsen}
+|axis y line=|\meta{Platzierung}, |axis x line=|\meta{Platzierung}\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}[
+minor tick num=3,
+axis y line=center,
+axis x line=middle,
+xlabel=$x$,ylabel=$\sin x$
+]
+\addplot[smooth,blue,mark=none,
+domain=-5:5,samples=40]
+{sin(deg(x))};
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Fehlerbalken}
+\begin{frame}[fragile,t]{Fehlerbalken}
+Fehler können mit den Optionen |error bars/|\meta{Key}|=|\meta{Value} gesetzt werden.\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}
+  \addplot+[
+   error bars/y dir=both,
+   error bars/y fixed relative=.1,
+  ] table [x=x,y=y]
+  {x	    y
+   32     32
+   64     64
+   128    128
+  };
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Fehlerbalken}
+Individuelle Fehler konnen mit |+-| (symmetrisch) oder |+=| und |-=| (asymmetrisch) angegeben werden:\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}
+  \addplot+[
+    error bars/.cd,
+    x dir=both,
+    x explicit,
+    y dir=both, 
+    y explicit,
+  ] coordinates {
+    (1,1) += (0.4,0.2) 
+          -= (0.1,0.1)
+    (3,2) -= (1,0)
+    (4,5) +- (0.3,0.2)
+  };
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{Fehlerbalken}
+Fehler können auch aus einer Tabelle stammen:\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot [only marks, mark=x, 
+    error bars/.cd,
+    y dir=both, y explicit,]
+      table
+      [x=time, y=values, y error=error]
+      {data.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+
+\subsection{Histogramme}
+\begin{frame}[fragile,t]{Histogramme}
+Histogramme mit Option |hist={|\meta{Histogram-Optionen}|}|\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot+[
+      fill=blue!40!white,
+      mark={},
+      hist={
+        data=y, 
+        bins=10
+      }
+    ] table {data.dat};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+Interessante Optionen:\\|cummulative| für kummuliertes Histogram\\|density| normiert auf 1
+\end{frame}
+
+\subsection{Balkendiagramme}
+\begin{frame}[fragile,t]{Balkendiagramme}
+Option |xbar| erzeug Balkendiagramm, |ybar| erzeugt Säulendiagramm\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}[
+ xbar,
+ width=6cm, height=3.5cm,
+ enlarge y limits=0.5,
+ xlabel={Anzahl der Antworten},
+ symbolic y coords={Ja,Nein},
+ ytick=data,
+]
+ \addplot coordinates
+  {(3,Nein) (7,Ja)};
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Balkendiagramme}
+\begin{frame}[fragile,t]{Balkendiagramme}
+Option |xbar| erzeug Balkendiagramm, |ybar| erzeugt Säulendiagramm\vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+\begin{axis}[
+ ybar,enlargelimits=0.15,
+ symbolic x coords={a,b,c},xtick={a,b,c},
+]
+ \addplot coordinates 
+ {(a,40) (b,50) (c,70)};
+ \addplot coordinates 
+ {(a,43) (b,45) (c,65)};
+ \addplot coordinates 
+ {(a,13) (b,25) (c,35)};
+\end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+
+\subsection{Boxplots}
+\begin{frame}[fragile,t]{Boxplots}
+|\usepgfplotslibrary{statistics}| erlaubt Satz von Boxplots:\vfill
+\usepgfplotslibrary{statistics}
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot+[
+    boxplot prepared={
+      median=4000,
+      upper quartile=5500,
+      lower quartile=3000,
+      upper whisker=1200,
+      lower whisker=15000,
+    } ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Polarkoordinaten}
+\begin{frame}[fragile,t]{Polarkoordinaten}
+Mit |\usepgfplotslibrary{polar}| versteht \pkg{pgfplots} Polarkoordinaten.\\
+|polaraxis| geht von Polarkoordinaten aus:\vfill
+\begingroup
+\pgfplotsset{scale=0.9}
+\usepgfplotslibrary{polar}
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{polaraxis}
+    \addplot coordinates {(90,1) (180,1)};
+  \end{polaraxis}
+\end{tikzpicture}
+\end{LTXexample}
+\endgroup
+\end{frame}
+
+
+\subsection{gnuplot}
+\begin{frame}[fragile,t]{gnuplot in pgfplots}
+|\addplot gnuplot [|\meta{Optionen}|] {|\meta{gnuplot Befehle}|};|\vfill
+
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{semilogyaxis}
+    \addplot gnuplot
+      [domain=0:10]
+      {exp(x)};
+  \end{semilogyaxis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile,t]{gnuplot in |pgfplots|}
+|\addplot gnuplot [|\meta{Optionen}|] {|\meta{gnuplot Befehle}|};|\vfill
+\begin{itemize}
+\item \pkg{pgfplots} ruft gnuplot auf und speichert das Ergebnis in Hilfsdateien. 
+\item gnuplot wird nur aufgerufen, wenn sich etwas geändert hat.
+\item gnuplot ist etwas schneller als interne Plots.
+\item gnuplot stellt mehr mathematische Funktionen zur Verfügung.
+\item gnuplot nutzt Radiant für Winkel, \pkg{pgfplots} nutzt Grad\\(außer mit Einstellung |trig format=rad|).
+\item gnuplot und interne Plots haben etwa die selbe Genauigkeit.
+\end{itemize}
+\end{frame}
+
+
+
+\subsection{3D-Plots}
+\begin{frame}[fragile,t]{3D-Plots}% \verb|\textbackslash addplot3|}
+|\addplot3 [|\meta{Optionen}|] {|\meta{Eingabedaten}|};| \vfill
+\begin{LTXexample}[pos=r, explpreset={}, preset=\small, rframe={}]
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot3[
+      surf,
+      domain=0:360,
+      samples=40,
+    ]
+    {sin(x)*sin(y)};
+  \end{axis}
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+
+%% Plots
+%%   achsenbeschriftungen
+%%   achse verschieben
+%%   grids
+
+
+
+\begin{frame}{Was |pgfplots| noch so alles kann …}
+\begin{itemize}
+\item extern erzeugte Plots (Bilder) in pgfplot-Koordinatensystem einfügen (auch 3D)
+\item in Matlab erzeugte Plot importieren
+\item beliebige Befehle in einer Shell ausführen und das Ergebnis plotten
+%\item Symbolische Koordinaten ($a,b,c,d$ statt $1,2,3,4$)
+\item Datum oder Uhrzeit als Koordinaten
+\item automatische Umrechnung von Koordinaten (z.\,B. polar in kartesisch)
+\item klickbare Plots (die ein Popup öffnen)
+\item Plots in einzelne externe Dateien ausgeben
+\item Flächen zwischen Kurven schraffieren
+\item Vektorfelder plotten
+\item …
+\item alles das \TikZ\ kann
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Weiterführende Literatur}
+\begin{thebibliography}{9}
+\bibitem{pgfplots} \textsc{Christian Feuersänger}:
+	\newblock{\href{http://mirrors.ctan.org/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{„Manual for Package pgfplots“}}, 
+	\newblock{\href{http://mirrors.ctan.org/graphics/pgf/contrib/pgfplots/doc/pgfplots.pdf}{\texttt{texdoc pgfplots}}.}
+
+\end{thebibliography}
+\end{frame}
+
+\end{document}

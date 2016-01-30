@@ -1,0 +1,235 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\usepackage{fontspec}
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.85]{Inconsolata}
+
+\usepackage{
+	booktabs,
+	caption,
+	enumitem,
+	exsheets,
+	exsheets-listings,
+	geometry,
+	hologo,
+	lastpage,
+	mathtools,
+	microtype,
+	scrlayer-scrpage,
+	shortvrb,
+	siunitx,
+	xspace,
+	hyperref,
+}
+\newif\ifdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blattnr}{9}
+\newcommand{\ausgabetermin}{11.12.2015}
+\newcommand{\abgabetermin}{18.12.2015}
+\draftfalse
+\SetupExSheets{solution/print=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper,vmargin=3cm,head=26.0pt}
+\frenchspacing
+\reversemarginpar
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\pagestyle{scrheadings}
+\KOMAoptions{
+	headtopline = 1pt,
+	headsepline = .6pt,
+	footsepline = .6pt,
+}
+\setkomafont{pagehead}{\normalfont\small\sffamily}
+\setkomafont{pagefoot}{\small\itshape}
+\ihead{Einführung in das\\Textsatzsystem \LaTeX}
+\chead{\bfseries Übungsblatt \blattnr}
+\ohead{Ausgegeben: \ausgabetermin\\Abgabe: \abgabetermin}
+\ifoot{Heidelberg, WS 2015}
+\cfoot{}
+\ofoot{Seite~\thepage~von~\pageref{LastPage}}
+
+\MakeShortVerb{|}
+\lstset{%
+	backgroundcolor=\color[rgb]{.9 .9 .9},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	language=[LaTeX]TeX,
+	commentstyle=,
+	keywordstyle=,
+	identifierstyle=,
+	tabsize=2,
+	captionpos=b,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=0,
+	numberfirstline=false,
+	frame=single
+}
+\ifdraft
+	\AtBeginDocument{\centerline{%
+   	\color{red}\Large \sffamily Vorläufige Version}%
+		\vspace*{1ex}%
+	}
+\fi
+\newcommand{\abgabe}[1]{\par\noindent\textit{Abgabe:} #1}
+\DeclareRobustCommand*\questionstar{\texorpdfstring{\bonusquestionsign}{* }}
+\DeclareRobustCommand*\bonusquestionsign{\llap{$\bigstar$\space}}
+\NewQuSolPair
+	{question*}[name=\questionstar Bonusaufgabe]
+	{solution*}[name=\questionstar Lösung]
+\DeclareInstance{exsheets-heading}{myblock}{default}{
+	title-pre-code = \sffamily,
+	number-pre-code =  \sffamily\bfseries~\blattnr.,
+	subtitle-pre-code = \upshape\sffamily\bfseries:~,
+	points-pre-code = \itshape,
+	join = {
+		number[r,vc]subtitle[l,vc](0pt,0pt);
+		title[r,vc]number[l,vc](0pt,0pt);
+	} ,
+	attach = { 
+		main[l,vc]title[l,vc](0pt,0pt);
+		main[r,vc]points[r,vc](0pt,0pt);
+	},
+}
+\SetupExSheets{
+	counter-format = qu[1],
+	headings = myblock,
+}
+\SetupExSheets[points]{
+	name = {\,Punkt/e},
+	bonus-name = {Bonuspunkt/e},
+}
+
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\texttt{#1}}}
+\newcommand{\TikZ}{Ti\textit{k}Z\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\begin{question}[subtitle=Bibliografien mit \pkg{biblatex}]{6}
+	In dieser Aufgabe sollen Sie ein Dokument (beliebigen Inhalts) erstellen, in das Sie eine Bibliografie einfügen. Die Bibliografie soll mit dem Backend \pkg{biber}\footnote{Falls Sie \TeX works nutzen ist |biber| nicht automatisch in der Programmauswahl enthalten. Sie können diesen Eintrag ergänzen, indem Sie in den Einstellungen im Reiter \emph{Typeseting} ein weiteres Processing Tool hinzufügen. (Programmname |biber|, Argument |\$basename|)} erstellt werden. 
+\begin{enumerate}[label=\alph*)]
+	\item Legen Sie zunächst eine |.bib|-Datei an, in der sie mindestens drei Veröffentlichungen aus Ihrem Fachgebiet\,/\,Studienfach einfügen. Sie können dafür gerne ein Literaturverwaltungsprogramm wie zum Beispiel JabRef verwenden. Um sich möglichst wenig Arbeit zu machen, müssen Sie nicht alle Felder von Hand füllen, sondern können einen fertigen BibTeX-Eintrag aus einer Internet-Datenbank verwenden.
+	\item Wählen Sie nun einen – in Ihrem Fach üblichen – Zitierstil und laden Sie in einem |.tex|-Dokument das Paket \pkg{biblatex} mit den entsprechenden Optionen, die diesen Zitierstil aktivieren. Konsultieren Sie gegebenenfalls die Paketdokumentation.
+	\item Schreiben Sie nun einen kurzen Text in Ihr Dokument, in dem Sie die in der |.bib|-Datei gesammelten Werke referenzieren. Spielen Sie ruhig ein wenig mit den verschiedenen Arten den |\textbackslash cite|-Befehl aufzurufen herum.
+	\item Sorgen Sie nun dafür, dass das Literaturverzeichnis in Ihrem Dokument auftaucht, indem Sie die entsprechenden Befehle aufrufen und die Referenzen von |biber| erstellen lassen.
+\end{enumerate}
+	\abgabe{Fertiges Dokument ausgedruckt, Quellcode und |.bib|-Datei per Mail.}
+\end{question}
+
+
+\newsavebox{\SolutionCodeA}
+\begin{lrbox}{\SolutionCodeA}
+\begin{minipage}{\textwidth}
+Aussehen der |.bib|-Datei:
+\begin{lstlisting}
+@article{Dumas:2007,
+ author={Dumas, Raphael and Chèze, Laurence and Verriest, Jean-Pierre},
+ title={{\it Adjustments to McConville et al. and Young et al. body segment inertial parameters}},
+ journal={Journal of Biomechanics},
+ year={2007},
+ volume={40},
+ number={3},
+ pages={543–553},
+}
+
+@article{deLeva:1996,
+ author={de Leva, Paolo},
+ title={{\it Adjustments to Zatsiorsky-Seluyanov's segment inertia parameters}},
+ journal={Journal of Biomechanics},
+ year={1996},
+ volume={29},
+ number={9},
+ pages={1223–1230},
+}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\newsavebox{\SolutionCodeB}
+\begin{lrbox}{\SolutionCodeB}
+\begin{minipage}{\textwidth}
+Einbinden des Pakets \pkg{biblatex}:
+\begin{lstlisting}
+\usepackage[
+  style=phys,
+  natbib=true,
+  backend=biber,
+]{biblatex}
+\end{lstlisting}
+Im Dokument:
+\begin{lstlisting}
+\cite{Dumas:2007,deLeva1996}
+\printbibliography
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeA
+
+\noindent\usebox\SolutionCodeB
+
+Der Satz der Bibliografie geschieht dann, indem nacheinander \LaTeX, \hologo{biber} und \LaTeX\ aufgerufen werden.
+\end{solution}
+
+
+\begin{question}[subtitle=Mehrsprachiger Satz]{6}
+\begin{enumerate}[label=\alph*)]
+	\item Verfassen Sie einen Text, in dem Sie die Vor- und Nachteile des Sprachsupports in \LaTeX\ darstellen. Würden Sie etwa einer befreundeten Linguistin oder einem befreundeten Sprachwissenschaftler den Einsatz von \LaTeX\ für mehrsprachige Dokumente empfehlen?
+	\item Verwenden Sie in Ihrem Dokument mindestens drei verschiedene Sprachen. Nutzen Sie dabei jeweils die verschiedenen Funktionen zur Sprach-Umschaltung von \pkg{babel} oder \pkg{polyglossia}. Wenn Sie eine Sprache studieren, dann sollte diese Sprache auf jeden Fall im Dokument vorkommen. 
+	\item Falls Sie eine Sprache sprechen, die ein anderes als das lateinische Alphabet nutzt, probieren Sie sie in Ihr Dokument einzufügen! Sorgen Sie dabei für eine korrekte Ausgabekodierung\footnote{Entweder durch den richtigen Einsatz des \pkg{fontenc}-Pakets, oder durch die Verwendung von \hologo{XeLaTeX} oder \hologo{LuaLaTeX}} damit der eingegebene Text im PDF auch tatsächlich angezeigt werden kann.
+\end{enumerate}
+	\abgabe{Quellcode und fertiges Dokument ausgedruckt, Quellcode per Mail.}
+\end{question}
+ 
+
+\newsavebox{\SolutionCodeC}
+\begin{lrbox}{\SolutionCodeC}
+\begin{minipage}{\textwidth}
+In der Präambel:
+\begin{lstlisting}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage{french, spanish}
+\end{lstlisting}
+Im Dokument:
+\begin{lstlisting}
+The document body is in English, but single words can be in \textspanish{español}
+or \textfrench{français}.
+
+\begin{french}
+  Il est également possible d'écrire des phrases entières en français.
+\end{french}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+
+\begin{solution}
+\noindent\usebox\SolutionCodeC
+\end{solution}
+
+
+
+
+\end{document}

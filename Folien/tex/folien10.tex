@@ -1,0 +1,255 @@
+% !TEX program = xelatex
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	hologo,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	pgfplots,
+	xspace,
+}
+
+\usepackage{
+	booktabs,
+	blindtext,
+}
+
+\setmainlanguage{german}
+\setotherlanguage{english}
+
+
+\usepackage{comicneue,skull,CountriesOfEurope,simpsons}
+\newfont{\cirth}{cirth scaled\magstep1}
+\font\ransom=ransom10 scaled 1  % leider fehlen dazu die map-files
+\newfont{\dancers}{dancers scaled\magstep1}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+%\setmonofont[Scale=.99]{Anonymous Pro}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{shapes, arrows, trees}
+
+\pgfplotsset{
+	compat=1.12,
+	width=7cm,
+	lua backend=true,
+}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\alert{\texttt{#1}}}}
+\newcommand{\TikZ}{Ti\textit{k}Z}
+\newcommand{\BibTeX}{Bib\TeX}
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.8\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann},
+}
+
+\lstloadlanguages{TeX}
+\lstset{%
+	language=TeX,
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+}
+
+
+\begin{document}
+\MakeShortVerb|
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Witziges und Obskures}
+\author[Mo]{Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{8. Januar 2016}
+
+\frame{\titlepage}
+
+
+\begin{frame}{\textenglish{\TeX-Code as a source of humor}}
+\TeX-Community bringt immer wieder lustigen Code und sinnlose Pakete hervor.\\Erste Anfänge: Postings von \textenglish{obfuscated Code} auf diversen \TeX-Mailinglisten und in Newsgroups\\ z.\,B. \href{http://www.ctan.org/pkg/inscrutable}{\alert{inscrutable}}, \href{http://www.ctan.org/pkg/reverxii}{\alert{reverxii}}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+\let~\catcode~`76~`A13~`F1~`j00~`P2jdefA71F~`7113jdefPALLF
+PA''FwPA;;FPAZZFLaLPA//71F71iPAHHFLPAzzFenPASSFthP;A$$FevP
+A@@FfPARR717273F737271P;ADDFRgniPAWW71FPATTFvePA**FstRsamP
+AGGFRruoPAqq71.72.F717271PAYY7172F727171PA??Fi*LmPA&&71jfi
+Fjfi71PAVVFjbigskipRPWGAUU71727374 75,76Fjpar71727375Djifx
+:76jelse&U76jfiPLAKK7172F71l7271PAXX71FVLnOSeL71SLRyadR@oL
+RrhC?yLRurtKFeLPFovPgaTLtReRomL;PABB71 72,73:Fjif.73.jelse
+B73:jfiXF71PU71 72,73:PWs;AMM71F71diPAJJFRdriPAQQFRsreLPAI
+I71Fo71dPA!!FRgiePBt'el@ lTLqdrYmu.Q.,Ke;vz vzLqpip.Q.,tz;
+;Lql.IrsZ.eap,qn.i. i.eLlMaesLdRcna,;!;h htLqm.MRasZ.ilk,%
+s$;z zLqs'.ansZ.Ymi,/sx ;LYegseZRyal,@i;@ TLRlogdLrDsW,@;G
+LcYlaDLbJsW,SWXJW ree @rzchLhzsW,;WERcesInW qt.'oL.Rtrul;e
+doTsW,Wk;Rri@stW aHAHHFndZPpqar.tridgeLinZpe.LtYer.W,:jbye
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Feuerwerk}
+Datei \href{http://www.ctan.org/pkg/happy4th}{|happy4th.tex|} enthält verwirrenden Code, der als \TeX-Ausgabe ein Feuerwerk erzeugt.
+
+\end{frame}
+
+\begin{frame}[t,fragile]{Alternativen zu |blindtext|}
+\overleaf{tex1001}
+\begin{itemize}
+\item \pkg{lipsum}
+\item \pkg{blindtext} mit Optionen |bible| oder |pangram|
+\item \pkg{kantlipsum}
+\item \pkg{ptext} (Persischer Blindtext)
+\item \pkg{quran} (Inhalt des Korans – auf Arabisch)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Coffee Stains}
+	\begin{columns}
+		\begin{column}{.3\textwidth}
+			Paket \alert{\href{http://hanno-rein.de/archives/349}{\texttt{coffee}}} erzeugt vektorisierte Kaffee-Flecken auf dem Dokument.
+		\end{column}
+		\begin{column}{.6\textwidth}
+			\includegraphics[page=1,width=\textwidth]{coffee4.pdf}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{witzige Schriftarten}
+	\begin{itemize}[<+->]
+		\item \pkg{comicsans}\hfill{\fontspec[Scale=.9]{Comic Sans MS} ziemlich furchtbare Schrift}
+		\item \pkg{comicneue}\hfill{\comicneue neuere, nicht ganz so furchtbare Schrift}
+%		\item \pkg{ransom}\hfill{\ransom kaputte Schreibmaschine}
+		\item \pkg{cirth}\hfill{\cirth baliN SelN ov fuxiN, lon-d ov monia}
+		\vspace{.2ex}
+
+		\item \pkg{skull}\hfill{|\$\textbackslash skull\$|\quad\Large$\skull$}
+		\item \pkg{countriesofeurope}\hfill{\Large\EUCountry{140}\EUCountry{141}\EUCountry{142}\EUCountry{143}\EUCountry{147}}
+		\vspace{-.8em}
+
+		\item \pkg{dancers}\hfill\scalebox{.6}{\dancers Sher­lock Holmes}\hspace{-2ex}\,
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{simpsons}
+Schriftart \pkg{simpsons} bietet Simpsons-Charaktere:\\[-.5em]
+|\textbackslash Homer| \uncover<2->{|\textbackslash Left\textbackslash Bart|}\hfill\Homer\uncover<2->{\Left\Bart} \\[2em]\pause\pause
+Position der Pupille anpassbar:\\[-.5em]
+|\textbackslash Goofy\textbackslash Lisa(1,1.6)(.85,1.6)|\hfill\Goofy\Lisa(1,1.6)(.85,1.6) \\[2em]
+\pause
+\hfill \Goofy\Marge(-.5,-.7)(1.5,.8) \Goofy\Maggie(1,-.6)(-.5,-.3) \quad \Left\Burns\hfill\,
+\end{frame}
+
+\begin{frame}[t]{chickenize}
+	Paket \pkg{chickenize} nutzt Lua um einzelne Buchstaben im \hologo{LuaTeX}-Input zu manipulieren.
+	\overleaf{tex1002}
+	
+	\begin{itemize}
+		\item Zufälliges wechseln der Schriftart
+		\item Färben einzelner Buchstaben
+		\item Färben des ganzen Texts als Regenbogen
+		\item Ersetzten aller Wörter durch das Wort „Chicken“
+		\item Ersetzten aller Buchstaben durch zufällige Buchstaben
+		\item …
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Spaßige Anforderungen}
+	Auf \url{tex.stackexchange.com} gibt es immer wieder witzige Fragen …
+	\begin{itemize}
+		\item \href{http://tex.stackexchange.com/questions/115471/using-contexts-cow-font-with-pdftex}{Using ConTeXts cow font with pdfTeX}
+		\item \href{http://tex.stackexchange.com/questions/145223/how-to-draw-a-coffee-cup}{How to draw a coffee cup?}
+		\item \href{http://tex.stackexchange.com/questions/63732/cute-child-friendly-document-in-latex}{Cute (child-friendly) document in LaTeX}
+		\item \href{http://tex.stackexchange.com/questions/29402/how-do-i-make-my-document-look-like-it-was-written-by-a-cthulhu-worshipping-madm}{How do I make my document look like it was written by a Cthulhu-worshipping madman?}
+		\item \href{http://tex.stackexchange.com/questions/74878/create-xkcd-style-diagram-in-tex}{Create xkcd style diagram in TeX}
+	\end{itemize}
+\end{frame}
+
+%xkcd-style
+
+\end{document}

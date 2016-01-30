@@ -1,0 +1,242 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\usepackage{fontspec}
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.85]{Inconsolata}
+
+\usepackage{
+	array,
+	booktabs,
+	caption,
+	colortbl,
+	enumitem,
+	exsheets,
+	exsheets-listings,
+	geometry,
+	hologo,
+	hhline,
+	lastpage,
+	microtype,
+	scrlayer-scrpage,
+	showexpl,
+	shortvrb,
+	hyperref,
+}
+\newif\ifdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blattnr}{4}
+\newcommand{\ausgabetermin}{06.11.2015}
+\newcommand{\abgabetermin}{13.11.2015}
+\draftfalse
+\SetupExSheets{solution/print=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper,vmargin=3cm,head=26.0pt}
+\frenchspacing
+\reversemarginpar
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\pagestyle{scrheadings}
+\KOMAoptions{
+	headtopline = 1pt,
+	headsepline = .6pt,
+	footsepline = .6pt,
+}
+\setkomafont{pagehead}{\normalfont\small\sffamily}
+\setkomafont{pagefoot}{\small\itshape}
+\ihead{Einführung in das\\Textsatzsystem \LaTeX}
+\chead{\bfseries Übungsblatt \blattnr}
+\ohead{Ausgegeben: \ausgabetermin\\Abgabe: \abgabetermin}
+\ifoot{Heidelberg, WS 2015}
+\cfoot{}
+\ofoot{Seite~\thepage~von~\pageref{LastPage}}
+
+\MakeShortVerb{|}
+\lstset{%
+	backgroundcolor=\color[rgb]{.9 .9 .9},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	language=[LaTeX]TeX,
+	commentstyle=,
+	keywordstyle=,
+	identifierstyle=,
+	tabsize=2,
+	captionpos=b,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=0,
+	numberfirstline=false,
+	frame=single
+}
+\ifdraft
+	\AtBeginDocument{\centerline{%
+   	\color{red}\Large \sffamily Vorläufige Version}%
+		\vspace*{1ex}%
+	}
+\fi
+\newcommand{\abgabe}[1]{\par\noindent\textit{Abgabe:} #1}
+\DeclareRobustCommand*\questionstar{\texorpdfstring{\bonusquestionsign}{* }}
+\DeclareRobustCommand*\bonusquestionsign{\llap{$\bigstar$\space}}
+\NewQuSolPair
+	{question*}[name=\questionstar Bonusaufgabe]
+	{solution*}[name=\questionstar Lösung]
+\DeclareInstance{exsheets-heading}{myblock}{default}{
+	title-pre-code = \sffamily,
+	number-pre-code =  \sffamily\bfseries~\blattnr.,
+	subtitle-pre-code = \upshape\sffamily\bfseries:~,
+	points-pre-code = \itshape,
+	join = {
+		number[r,vc]subtitle[l,vc](0pt,0pt);
+		title[r,vc]number[l,vc](0pt,0pt);
+	} ,
+	attach = { 
+		main[l,vc]title[l,vc](0pt,0pt);
+		main[r,vc]points[r,vc](0pt,0pt);
+	},
+}
+\SetupExSheets{
+	counter-format = qu[1],
+	headings = myblock,
+}
+\SetupExSheets[points]{
+	name = {\,Punkt/e},
+	bonus-name = {Bonuspunkt/e},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{question}[subtitle=Schöne Tabelle]{6}
+	Mithilfe des Pakets \verb|booktabs| ist es möglich, typografisch anspruchsvolle Tabellen zu setzen. Die Dokumentation\footnote{\texttt{texdoc booktabs}} liefert viele Gestaltungshinweise und Best-Practice-Beispiele. Die folgende Tabelle hält sich leider nicht so richtig an diese Empfehlungen.
+
+\begin{minipage}{\textwidth}
+	\centering
+	\begin{tabular}{|p{2.1cm}||p{2.5cm}|cl|lr|}
+		\hhline{=-----}
+		Produkt & Herkunft & Saisonbegin & Saisonende & Handelsklasse & verfügbar\\\hhline{======}
+		Auberginen & Frankreich & Juli & September & I & – \\\hline
+		Esskastanien & Frankreich & September & September & I & – \\\hline
+		Feldsalat & Deutschland & Oktober & Februar & II & ja \\\hline
+		Kürbis & Deutschland & August & Dezember & I & ja\\\hline
+		Rote Beete & Italien & September & Februar & I  & ja\\\hline
+		Zucchini & Spanien & Juni & Oktober & II &  –\\\hline
+		Zwiebeln & Deutschland & Mai & Oktober & – & –\\\hhline{======}
+	\end{tabular}
+\end{minipage}
+	
+	\begin{enumerate}[label=\alph*)]
+		\item Korrigieren Sie dieses Manko und setzen Sie die Tabelle nach allen Regeln der Kunst in ein \LaTeX-Dokument. Denken Sie dabei auch über die in der Vorlesung vorgestellten Möglichkeiten des \verb|multirow|-Paktets und des \texttt{\textbackslash multicolumn}-Befehls nach.
+		\item Setzen Sie die Tabelle außerdem in eine geeignete Gleitumgebung und versehen Sie sie mit einem vielsagenden Titel.
+		\item Geben Sie \emph{handschriftlich} einen kurzen Kommentar zu den von Ihnen vorgenommenen Änderungen an. (Grund für die Änderungen, Probleme, Alternativlösungen, …)
+	\end{enumerate}
+	\abgabe{Den Quelltext per Mail, Quellcode und fertiges Dokument als Ausdruck. Handschriftlicher Kommentar auf dem Ausdruck.}
+\end{question}
+
+
+\newpage 
+\newsavebox{\SolutionCodeA}
+\begin{lrbox}{\SolutionCodeA}
+\begin{minipage}{\textwidth}
+Eine Möglichkeit die Tabelle zu Setzen wäre zum Beispiel:
+
+\begin{LTXexample}[pos=b]
+\begin{table}
+	\centering
+	\begin{tabular}{llcccl}
+		\toprule
+		&& \multicolumn{2}{c}{\textbf{Saison}} \\
+		\cmidrule{3-4}
+		\textbf{Produkt} & \textbf{Herkunft} & \textbf{Begin} & \textbf{Ende} & \textbf{Handelskl.} & \textbf{Verfügbarkeit}\\
+		\midrule
+		Auberginen & Frankreich & Juli & September & I &  \\
+		Esskastanien & Frankreich & \multicolumn{2}{c}{September} & I &  \\
+		Feldsalat & Deutschland & Oktober & Februar & II & ja \\
+		Kürbis & Deutschland & August & Dezember & I & ja\\
+		Rote Beete & Italien & September & Februar & I  & ja\\
+		Zucchini & Spanien & Juni & Oktober & II &  \\
+		Zwiebeln & Deutschland & Mai & Oktober &  & \\
+		\bottomrule
+	\end{tabular}
+	\caption{Unser saisonales Gemüseangebot}
+\end{table}
+\end{LTXexample}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeA
+\end{solution}
+
+\newpage 
+
+\begin{question}[subtitle=Bunte Tabelle]{6}
+	Bisher waren alle Übungsaufgaben in klassischem schwarz/weiß gehalten. An dieser Stelle soll aber gezeigt werden, dass \LaTeX\ sehr wohl auch mit Farben umgehen kann – und zwar am Beispiel einer Tabelle.
+
+	Farben können in \LaTeX\ mit dem Paket \verb|color| verwendet werden, das den Befehl \texttt{\textbackslash color\{\}} zur Verfügung stellt. \texttt{\textbackslash color\{\}} nimmt als Argument eine bekannte Farbe und stellt auf diese um, z.\,B. \texttt{\textbackslash color\{blue\}}. Angaben in rgb-Code o.\,ä. sind auch möglich, z.\,B. \texttt{\textbackslash color[gray]\{0.8\}}. Das Paket \verb|xcolor| erweitert die Möglichkeiten des \texttt{\textbackslash color}-Befehls noch enorm. (Unter anderem ist die Angabe einer Wellenlänge statt Farbe möglich.)
+
+	Studieren Sie die Dokumentation des Paketes \verb|colortbl| und produzieren Sie mithilfe dieses Paketes ein Minimalbeispiel, das eine Tabelle enthalten soll, die wie die folgende aussieht: % der Code ist natürlich keine Vorlage, sondern soll die geforderte Lösung mit anderer Implementierung visualisieren
+
+	\centering
+	\begin{tabular}{l!{\hspace*{-4.3mm}}l}
+		\colorbox{gray}{\textcolor{black}{Wochentag}} & \colorbox{gray}{\textcolor{black}{Buchstaben\vphantom{Wg}}}\\
+		\colorbox{blue}{\textcolor{white}{Montag\hspace*{.8em}}} & 6 \\
+		\colorbox{blue}{\textcolor{white}{Dienstag\hspace*{.34em}}} & 8\\
+		\colorbox{blue}{\textcolor{white}{Mittwoch}} &  8\\
+		\vdots & \vdots \\
+	\end{tabular}
+	\captionof{table}{Eine wichtige Tabelle hat immer\\ eine vielsagende Beschriftung!}
+
+	\abgabe{Den Quelltext per Mail und als Ausdruck.}
+\end{question}
+
+
+
+\newsavebox{\SolutionCodeB}
+\begin{lrbox}{\SolutionCodeB}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+\documentclass{scrartcl}
+\usepackage{colortbl}
+\setlength{\tabcolsep}{.3em}
+
+\begin{document}
+  \begin{table}
+    \centering
+    \begin{tabular}{>{\color{white}\columncolor{blue}}l l}
+      \rowcolor[gray]{.5} \color{black} Wochentag & Buchstaben\\
+      Montag & 6 \\
+      Dienstag & 8 \\
+      Mittwoch & 8 \\
+      Donnerstag & 10 \\
+      Freitag & 7 \\
+      Samstag & 7 \\
+      Sonntag & 7 \\
+    \end{tabular}
+  \caption{Hier kommt die vielsagende Beschriftung}
+  \end{table}
+\end{document}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeB
+\end{solution}
+
+
+
+\end{document}

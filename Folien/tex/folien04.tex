@@ -1,0 +1,801 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+%\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	xspace,
+}
+
+\usepackage{
+	12many,
+	amsthm,
+	relsize,
+%	breqn,
+	cases,
+	esvect,
+	gnuplottex,
+	soul,
+	ulem,
+	dsfont,
+}
+\normalem
+
+
+\setmainlanguage{german}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+
+%\renewcommand{\sfdefault}{\rmdefault}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc,intersections,through, positioning}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\texttt{#1}}
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.8\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann with credit to Arno Trautmann},
+}
+
+\lstset{%
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue} 
+}
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Mathematiksatz II}
+\author[Mo]{Fabian Grünig\\\url{gruenig@posteo.de}\\[1ex]Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{13. November 2015}
+
+
+\begin{document}
+\MakeShortVerb{\|}
+
+\frame{\titlepage}
+
+\begin{frame}[shrink]{Übersicht}
+	\tableofcontents
+\end{frame}
+
+% Mathe
+%   Relationen
+%   Mengen
+%   komplexe Matrizen
+%   typische Mathe-Umgebungen
+% Physik
+% 	 schöne Vektoren
+%   Feynman-Graphen
+%   braket
+%   Plotten
+% Finetuning
+%  Schriften
+%   Spaces
+%   smashing
+%   Nummerierung
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Mathe}
+\subsection{Relationen}
+\begin{frame}[fragile]{Relationen}
+\begin{LTXexample}
+$= \equiv \approx \asymp \bowtie \cong \dashv \doteq \sim \simeq \propto \smile$
+\end{LTXexample}
+\pause Negierung mit |\not|
+
+\begin{LTXexample} 
+$\not = \neq \not\equiv
+\not \approx \not A
+\not\kern-.2em\int \not\kern-.2em\partial \not \smile$
+\end{LTXexample}
+\pause Stapeln von Symbolen
+
+\begin{LTXexample}
+$\stackrel{oben}{unten}$
+$\stackrel{\text e}{\text a} = $ ä
+$\stackrel . = \neq \doteq$
+\end{LTXexample}
+\hfill$\stackrel !=$
+\end{frame}
+
+
+\subsection{Mengen}
+\begin{frame}[fragile]{12many}
+\begin{itemize}
+\item Paket |12many| bietet Vereinfachung und Anpassung zum Mengensatz:\\%
+$\{1, \dots, m\}$
+\item Befehle:\\
+|\nto{n}{m}|, |\ito{m}|, |\oto{m}|
+\item Stil ändern mit |\setOTMstyle[]{|\meta{style}|}|
+\end{itemize}
+\begin{LTXexample}[width=.6\textwidth]
+$ \nto{i}{k},
+  \ito{m},
+  \oto{\alpha_i} $
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Integrale}
+\begin{frame}[fragile]{Integrale}
+\AmS{}math bietet weitere Integrale:
+\begin{LTXexample}[width=.45\textwidth]
+\[ \iint \iiint \iiiint \]
+\[ \oint \idotsint \]
+\[ \int \int \]
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Integrale}
+\begin{columns}
+\begin{column}{.4\textwidth}
+Zusätzliche Integraldarstellungen bieten:
+\begin{itemize}
+\item |wasysym|
+\item |txfonts|
+\item |esint|
+\item |MnSymbol|
+\item |mathdesign|
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\alert{Auf Kompatibilität achten}\\
+Verschiedene Matheschriften zusammen können Probleme bereiten.
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\subsection{Komplexe Matrizen}
+\begin{frame}[fragile]{Satz komplexer Matrizen}
+\begin{LTXexample}[width=.4\textwidth]
+\[\begin{pmatrix}
+a & b     & \dots & z\\
+b & \dots & \dots & z\\
+\vdots & \ddots& \reflectbox{$\ddots$} & \vdots\\
+\hdotsfor{4}\\
+z & b & \dots &
+\begin{pmatrix}a & b \\ c & d
+\end{pmatrix}
+\end{pmatrix}\]
+
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Typische Mathe-Umgebungen}
+\begin{frame}[fragile]{Typische Mathe-Umgebungen}%{Definition, Satz, Beweis, Lemma, …}
+Mit dem \AmS-Paket |amsthm| lassen sich typische Mathe-Umgebungen wie „Satz“ und „Beweis“ erstellen:
+\begin{itemize}
+\item Anlegen einer Umgebungen mit |\newtheorem{|\meta{Kürzel}|}{|\meta{Name}|}[|\meta{Nummerierungsebene}|]|
+\end{itemize}
+\begin{lstlisting}
+\newtheorem{def}{Definition}[section]
+\newtheorem{thm}{Satz}[section]
+\newtheorem*{lemma}{Lemma}
+\end{lstlisting}
+\newtheorem{thm}{Satz}[section]
+\begin{LTXexample}
+\begin{thm}[Fabian]
+  Sei $a=b$ und $b=c$. Dann ist $a=c$.
+\end{thm}
+\begin{proof}
+  Trivial.
+\end{proof}
+\end{LTXexample}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Physik}
+\subsection{SI-Einheiten}
+\begin{frame}[fragile]{Setzen von Einheiten}
+Paket |siunitx| (Joseph Wright)
+\begin{LTXexample}[preset={\obeylines},pos=r]
+\SI[separate-uncertainty]{23.448(5)e23}{g.cm^3}
+\si[per-mode=fraction]{\joule\per\eV}
+\si{\joule\per\eV}
+\num[round-precision=2]{4.4583 x 3.2 e21}
+\num[mode=text]{4.58}
+\num[exponent-product=\cdot]{1e10}
+\ang[]{45}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Setzen von Einheiten}
+Ändern der Voreinstellungen mittels |\sisetup|
+\begin{LTXexample}
+\sisetup{negative-color}
+$\num{-3}, \num{3},
+\num[negative-color=blue]{-5x5},
+\num{2}\cdot\num 2$\\
+
+\def\a{5.1}
+$\SI{\a x 5.3}{\milli\meter}$\\
+$\num{\a x 5.3}\si{\square\milli
+\meter}$\\
+$\num{\a x 5.3}\si{\milli\meter
+\squared}$
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Gradangaben}
+\begin{LTXexample}
+\ang{10}
+\ang{12.3}
+\ang{4,5}
+\\ Heidelberg:
+\ang{49;25;}N, \ang{8;43;}O, \ang{49;25;}N, \ang{8;43;}O
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Einheiten}
+\begin{LTXexample}[preset=\large]
+\SI{5.54}{ms^{-2}}\\
+\SI{5.54}{m s^{-2}}\\
+\SI{5.54}{m.s^{-2}}\\
+\SI{5.54}{\meter\per\second\squared}\\
+\SI{5.54}{\meter\per\square\second}\\
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Einheiten}
+\begin{LTXexample}[width=.4\textwidth]
+\sisetup{per-mode=fraction}
+\SI{1.23}{\joule\per\mole\per\kelvin}
+\\ \sisetup{per-mode=symbol}
+\SI{1.23}{\joule\per\mole\per\kelvin}
+\\ \sisetup{per-mode=fraction,fraction-function=nice}
+\SI{1.23}{\joule\per\mole\per\kelvin}
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Mehr Vektoren}
+\begin{frame}[fragile]{Mehr Vektoren}
+\begin{itemize}
+\item manchmal hat man spezielle Anforderungen an die Vektorpfeile
+\item Paket \pkg{esvect} bietet Anpassungen der Pfeilform
+\item korrekter Satz bei Subskripten wird beachtet
+\end{itemize}
+\begin{LTXexample}[preset={\obeylines}]
+$\vv a$
+$\vec a$
+\end{LTXexample}
+\begin{itemize}
+\item Pfeiltyp über Paketoption |[a]| bis |[h]| einstellbar
+\item mögliche Pfeile: siehe Dokumentation
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Mehr Vektoren}{Subskripte}
+\begin{itemize}
+\item Sternversion |\vv*{}{}| sorgt für passende Subskripte:
+\end{itemize}
+\begin{LTXexample}[preset={\obeylines}]
+$\vec{ab}_{\Delta}$\\[-2ex]
+$\vv {{ab}_{\Delta}}$\\[-2ex]
+$\vv*{ab}{\Delta}$
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Feynman-Graphen}
+\iffalse
+\section{Feynman-Graphen}
+\begin{frame}[fragile]{Feynman-Graphen}
+\begin{itemize}
+\item verschiedene Möglichkeiten für Feynman-Graphen:
+\item Paket |feynmf|
+\item Paket |feyn|
+\item Graphiksoftware
+\item Metafont
+\item TikZ/PS-Tricks
+\item …
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{feyn}
+\begin{itemize}
+\item kleines, leicht bedienbares Paket
+\item bietet eine Matheschrift, mit der Feynman-Graphen gesetzt werden können
+\item (halb)intuitive Bedienung
+\item |\feyn|: Mathemodus
+\item |\Feyn|: Textmodus
+\item |\Diagram|: Komplexe Diagramme
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{feyn}
+\begin{LTXexample}
+\[\feyn{f+g}\]
+\[\feyn{fA} \feyn{gV}\]
+\end{LTXexample}
+\begin{LTXexample}
+\[\Diagram{\vertexlabel^a \\
+  fd \\
+    & g\vertexlabel_{\mu,c} \\
+  \vertexlabel^b fu\\
+}
+= ig\gamma_\mu (T^c)_{ab}\]
+\end{LTXexample}
+\pause
+⇒ siehe (sehr gute) Dokumentation von |feyn|
+\end{frame}
+\fi
+
+
+\subsection{Quantenmechanik}
+\begin{frame}[fragile]{bra ket}
+\begin{itemize}
+\item abstrakte Darstellung von Zuständen in der Quantenmechanik
+\item Unabhängigkeit von Koordinaten
+\item Ket: \verb|\ket a|, Bra: \verb|\bra a|
+\item Skalarprodukt: Bra(c)ket: \verb|\braket{a l b}|
+\item Matrixelement: \verb|\braket{a l A l b}|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Satz von bra und ket}
+Paket \verb|braket|
+\begin{verbatim}
+\bra a \ket b
+\braket{a|\frac A B|a}
+\Braket{a|\frac A B|a}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Akzente}
+Für Operatoren benötigt man das „Dach“:
+\begin{LTXexample}[width=.4\textwidth]
+$\hat A \hat{\mathrm{A}} \bar h \check a \dot a\\
+\ddot a \dddot a \ddddot a\\
+\underbrace{E = mc^2}_\text{nach Einstein}\overbrace{\int_\infty}^{\text{Hinweis}}$
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Pfeile}
+Für Spinzustände oft verwendete Notation mittels Pfeilen:
+\begin{LTXexample}[width=.4\textwidth]
+$\uparrow \downarrow \Uparrow \Downarrow
+\Rightarrow \leftrightarrow\\
+\longrightarrow \mapsto \to \rightarrow
+\leftharpoondown \rightharpoonup \rightleftharpoons
+\Rsh$
+\end{LTXexample}
+\end{frame}
+
+\MakeShortVerb|
+\begin{frame}[fragile]{mehr Pfeile}
+Über- und Unterschreibungen von Pfeilen\\ (Beschriftung von Reaktionsgleichungen etc.)
+\begin{LTXexample}
+$\xleftarrow[unten]{oben}
+ \xrightarrow[unten]{}$
+\end{LTXexample}
+\begin{LTXexample}
+$\overleftarrow a
+\overleftrightarrow b
+\stackrel\leftrightarrow T$
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Plotten in \LaTeX}
+%TODO: verweis auf Diagramme am 27.11.
+\begin{frame}[fragile]{Plotten in \LaTeX}
+\begin{itemize}
+	\item $\exists$ |gnuplottex|
+	\item PGFplots ist besser → eigene Vorlesung
+\end{itemize}
+\end{frame}
+
+\begin{frame}{gnuplot}{was ist das?}
+\begin{itemize}
+\item kommandozeilenorientiertes Plotprogramm
+\item klein, schnell
+\item unintuitive Bedienung
+\item optimal für Ausführung aus Skripten
+\item[⇒] passt zur Arbeitsweise mit \TeX
+\item nützlich für schnelle Testplots
+\item auch professionelle Qualität möglich
+\end{itemize}
+\end{frame}
+
+\begin{frame}{gnuplot}{Plotten in \LaTeX}
+\begin{itemize}
+\item {Vorteile}: Plotbefehle direkt im Dokument\\%
+  Schriften von \LaTeX\ verwaltet ⇒  passend!
+\item {Nachteile}: Portabilität leidet\\%
+  Plot wird bei jedem Durchlauf neu erstellt\\%
+  umständlich unter Windows
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{gnuplot}{Verwendung}
+\begin{itemize}
+\item Start aus Kommandozeile (unter Windows GUI verfügbar)
+\item Grundbefehl: |plot|
+\item Abkürzungen aller Befehle möglich: |plot| = |pl| = |p|
+\item |p sin(x)|, |p "Datensatz" using 1:3|
+\item |set style data lines|, |rep|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{gnuplot}{Ausgabe}
+\begin{itemize}
+\item gnuplot bietet riesige Vielzahl an Ausgabeformaten
+\item u.\,a. ps, jpeg, mf, mp, hp500c, gif
+\item direkte Anzeige: wxt (windows), X11 (Unix)
+\item viele \TeX-Formate (pstex, pslatex, texdraw, eepic, emtex, \dots)
+\item \emph{kein} pdf
+\item aus \LaTeX: unabhängig vom Treiber
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{gnuplot}{gnuplottex}
+\begin{LTXexample}
+\begin{gnuplot}[scale=0.3]
+p sin(x)
+\end{gnuplot}
+\begin{gnuplot}[scale=0.4]
+set style data linespoints
+p "beispiele/plotdaten.gpt"
+\end{gnuplot}
+\end{LTXexample}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Finetuning}
+\subsection{Schriften}
+\begin{frame}[fragile]{Matheschriften}
+\begin{itemize}
+\item Matheschrift muss am Anfang des Dokumentes festgesetzt werden
+\item Kann nicht im Dokument geändert werden
+\item Pakete freier Schriften
+\item |mathpazo|
+\item |cmbright|
+\item |mathpazo|
+\item |eulervm|
+\end{itemize}
+Eine Reihe nichtfreier Schriften ist in speziellen Paketen verfügbar.
+\end{frame}
+
+\begin{frame}[fragile]{Matheschriften}
+Hervorhebungen/besondere Buchstaben:
+\begin{itemize}
+\item Kalligraphische Buchstaben |\mathcal|
+\item Serifenlose
+\item Fraktur |\Re \Im|: \hfill $\Re, \Im$
+\item Aufrechte Buchstaben
+%\item Fettdruck (für Griechisch: Paket |\bm|)
+\item „blackboard bold“ |\mathbb{R}|:\hfill $\mathbb R$
+\item mit Paket |dsfont| |\matds{R}|: \hfill$\mathds{R}$
+\end{itemize} 
+\end{frame}
+
+\begin{frame}[fragile]{Matheschriften}
+\begin{itemize}
+\item Paket |unicode-math| (Will Robertson) bietet experimentellen Zugriff auf otf-Matheschriften
+\item freie Matheschriften selten
+\item Unterstützung noch sehr rudimentär
+\item zukünftige Entwicklung vielversprechend
+\item in \LaTeX3 evtl. stabil verfügbar \dots
+\item geplant für lua\TeX
+\end{itemize}
+\end{frame}
+
+
+\subsection{Spaces}
+\begin{frame}[fragile]{Änderung der Platzverteilung}
+\begin{itemize}
+\item Kerning
+\item v/hspace: |\hspace{1cm},\hspace*{1cm}|
+\item Achtung bei |\vspace|: Nur im vertikalen Modus möglich
+\item Phantome
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Phantome}
+\begin{LTXexample}[width=.4\textwidth]
+$a_x = b$\\
+$\hphantom{a_x} = b$\\
+$\underline{a_x} = \underline{b\vphantom{a_x}} c \underline{a_x} \underline b$
+\end{LTXexample}
+\begin{LTXexample}
+\begin{align*}
+a &= b\\
+c &= d\\
+\int a &= b
+\end{align*}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Phantome}
+\begin{LTXexample}[width=.4\textwidth]
+$a_x = b$\\
+$\hphantom{a_x} = b$\\
+$\underline{a_x} = \underline{b\vphantom{a_x}}\underline b$
+\end{LTXexample}
+\begin{LTXexample}
+\begin{align*}
+a &= b\\
+\vphantom{\int} c &= d\\
+\int a &= b
+\end{align*}
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Smashing}
+\begin{frame}{mathtools}
+\begin{itemize}
+\item Paket \pkg{mathtools} bietet:
+\item Erweiterungen/Ergänzungen/Bugfixes zu \pkg{amsmath}
+\item fine-tuning des Mathesatzes
+\item Sammlung von Tricks von Michael J. Downes
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{mathtools}{fine-tuning: smashing}
+\begin{LTXexample}[pos=t]
+\[X = \sum_{1\le i\le j\le n} X_{ij}
+X = \sum_{\mathclap{1\le i\le j\le n}} X_{ij}
+X = \sum_{\mathclap{1\le i\le j\le n}}^{a+b+c+d} X_{ij}
+X = \smashoperator[r]{\sum_{1\le i\le j\le n}^{a+b+c+d}} X_{ij}
+\]
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{mathtools}{tags}
+\begin{itemize}
+\item Standardform der tags ist nicht immer schön: (4)
+\item Änderung mittels \pkg{amsmath}\\%
+„[is] not very user friendly (it involves a macro with three @’s in its name)“
+\item \pkg{mathtools}’ Weg:
+\end{itemize} 
+\begin{LTXexample}[width=.3\textwidth]
+\newtagform{brackets}{[}{]}
+\usetagform{brackets}
+\begin{equation}E \neq mc^3\end{equation}
+\newtagform{bfbrackets}[\textbf]{[}{]}
+\usetagform{bfbrackets}
+\begin{equation}E \neq mc^4\end{equation}
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Umbrüche}
+\begin{frame}{Umbruch von Formeln}
+\begin{itemize}
+\item nicht nur Text, sondern auch lange Formeln müssen umbrochen werden
+\item sinnerhaltender Umbruch schwer
+\item Umbruch nur im Inline-Mode
+\item Umbruch nur bei binären Operatoren
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Umbruch von Formeln}
+\begin{itemize}
+\item Paket \pkg{breqn} ermöglicht Umbruch in Display-Formeln
+\item eigene Umgebungen: |dmath(*)| (wie |\[ \]|)
+\item |dseries| 
+\item |dgroup| (wie |align|)
+\item |darray| (wie |eqnarray|)
+\item |dsuspend| (unterbricht)
+\item Befehl |\condition| für Bedingungen
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Probleme}
+\begin{itemize}
+\item \pkg{breqn} lädt \pkg{flexisym}
+\item \pkg{flexisym} definiert eigene Mathezeichen
+\item[⇒] Inkompatibilität mit Schriftpaketen
+\item speziell \alert{inkompatibel} zu \pkg{fontspec} (nicht mehr?)
+\end{itemize}
+\end{frame}
+
+
+\subsection{Nummerierung}
+\begin{frame}[fragile]{Nummerierung von Fallunterscheidungen}
+\begin{itemize}
+\item Paket \pkg{cases} bietet Nummerierung von case-Konstrukten:
+\end{itemize} 
+\begin{LTXexample}[pos=b]
+\begin{numcases}{E = mc^2}
+m \neq 0 & Masselose Teilchen\\
+m < 0 & Antiteilchen (?)\\
+m > 0 & normale Teilchen
+\end{numcases}
+\end{LTXexample}
+\end{frame}
+
+
+\subsection{Größenänderungen}
+\begin{frame}[fragile]{Relative Größenangabe}
+\begin{itemize}
+\item Wenn normale Schriftgrößen nicht ausreichen:\\%
+|\displaystyle, \textstyle, \scriptstyle, \scripscriptstyle|
+\item Paket |relsize|
+\item Grundbefehle |\relsize{n}|, |n| gibt Schrittweite an
+\item |\larger = \relsize{1}|
+\item |\smaller = \relsize{-1}|
+\item |\relscale{0.75}| – Skalierung auf den angegebenen Faktor
+\item |\mathsmaller|, |\mathlarger| – Änderung der Matheschriftgröße
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Relative Größenangabe}
+\begin{LTXexample}[pos=b]
+\[\Delta \varphi = 2
+\int\limits_{r_{\min}}^{r_{\max}} \frac{ \dfrac{M}{r^2} dr} 
+{\sqrt{2m (E-U) - \dfrac{M^2}{r^2}}}
+\]
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{Relative Größenangabe}
+\begin{LTXexample}[pos=b]
+\newcommand\largeint{\mathlarger{\mathlarger{\mathlarger{\int}}}}
+\[\Delta \varphi = 2
+\largeint\limits_{r_{\min}}^{r_{\max}} \frac{ \dfrac{M}{r^2} dr} 
+{\sqrt{2m (E-U) - \dfrac{M^2}{r^2}}}
+\]
+\end{LTXexample}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+\section{ulem, soul}
+\begin{frame}{Streichen}{durch, unter, quer, …}
+\begin{itemize}
+\item Pakete \pkg{ulem} und \pkg{soul} bieten verschiedene Hervorhebungsmakros\pause
+\item \pkg{ulem}: \emph{underline-emphasize}
+\item \pkg{soul}: \emph{space out, underline}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{ulem}
+\begin{itemize}
+\item Hauptzweck: Ändern von |\emph| zu |\underline|
+\item falls nicht gewünscht: |\normalem| oder Option |normalem|
+\item andere Befehle:
+\end{itemize}
+\begin{LTXexample}
+\uline{test}
+\uuline{test}
+\uwave{test}
+\sout{test}
+\xout{test}
+\useunder{\uwave}{\bfseries}{\textbf}
+\textbf{test}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[fragile]{soul}
+\begin{LTXexample} 
+\so{letterspacing}
+\caps{CAPITALS, Small Caps}
+\ul{underline}
+\st{strikeout}
+\hl{highlight}
+\sethlcolor{blue}
+\setulcolor{red}
+\setulcolor{green}
+\hl{highlight}
+\end{LTXexample}
+\end{frame}
+
+
+% Allgemeines
+%   Schriften
+% Mathe
+%   Relationen
+%   Mengen
+%   komplexe Matrizen
+%   komm. Diagramme
+% Physik
+% 	 schöne Vektoren
+%   Feynman-Graphen
+%   braket
+%   Plotten
+% Finetuning
+%   Spaces
+%   smashing
+%   Nummerierung
+
+
+\end{document}

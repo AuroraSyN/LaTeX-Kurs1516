@@ -1,0 +1,237 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\usepackage{fontspec}
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.85]{Inconsolata}
+
+\usepackage{
+	enumitem,
+	exsheets,
+	exsheets-listings,
+	geometry,
+	hologo,
+	lastpage,
+	mathtools,
+	microtype,
+	scrlayer-scrpage,
+	shortvrb,
+	showexpl,
+	hyperref,
+}
+\newif\ifdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blattnr}{3}
+\newcommand{\ausgabetermin}{30.10.2015}
+\newcommand{\abgabetermin}{06.11.2015}
+\draftfalse
+\SetupExSheets{solution/print=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper,vmargin=3cm,head=26.0pt}
+\frenchspacing
+\reversemarginpar
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\pagestyle{scrheadings}
+\KOMAoptions{
+	headtopline = 1pt,
+	headsepline = .6pt,
+	footsepline = .6pt,
+}
+\setkomafont{pagehead}{\normalfont\small\sffamily}
+\setkomafont{pagefoot}{\small\itshape}
+\ihead{Einführung in das\\Textsatzsystem \LaTeX}
+\chead{\bfseries Übungsblatt \blattnr}
+\ohead{Ausgegeben: \ausgabetermin\\Abgabe: \abgabetermin}
+\ifoot{Heidelberg, WS 2015}
+\cfoot{}
+\ofoot{Seite~\thepage~von~\pageref{LastPage}}
+
+\MakeShortVerb{|}
+\lstset{%
+	backgroundcolor=\color[rgb]{.9 .9 .9},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	language=[LaTeX]TeX,
+	commentstyle=,
+	keywordstyle=,
+	identifierstyle=,
+	tabsize=2,
+	captionpos=b,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=0,
+	numberfirstline=false,
+	frame=single
+}
+\ifdraft
+	\AtBeginDocument{\centerline{%
+   	\color{red}\Large \sffamily Vorläufige Version}%
+		\vspace*{1ex}%
+	}
+\fi
+\newcommand{\abgabe}[1]{\par\noindent\textit{Abgabe:} #1}
+\DeclareRobustCommand*\questionstar{\texorpdfstring{\bonusquestionsign}{* }}
+\DeclareRobustCommand*\bonusquestionsign{\llap{$\bigstar$\space}}
+\NewQuSolPair
+	{question*}[name=\questionstar Bonusaufgabe]
+	{solution*}[name=\questionstar Lösung]
+\DeclareInstance{exsheets-heading}{myblock}{default}{
+	title-pre-code = \sffamily,
+	number-pre-code =  \sffamily\bfseries~\blattnr.,
+	subtitle-pre-code = \upshape\sffamily\bfseries:~,
+	points-pre-code = \itshape,
+	join = {
+		number[r,vc]subtitle[l,vc](0pt,0pt);
+		title[r,vc]number[l,vc](0pt,0pt);
+	} ,
+	attach = { 
+		main[l,vc]title[l,vc](0pt,0pt);
+		main[r,vc]points[r,vc](0pt,0pt);
+	},
+}
+\SetupExSheets{
+	counter-format = qu[1],
+	headings = myblock,
+}
+\SetupExSheets[points]{
+	name = {\,Punkt/e},
+	bonus-name = {Bonuspunkt/e},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{question}[subtitle=Maxwell-Gleichungen]{6}
+	Jeder Physiker sollte einmal im Leben die Maxwell-Gleichungen \TeX{}en, und auch für Studis anderer Fächer bieten diese Formeln eine gute Möglichkeit, den Mathesatz zu testen. Die vier Gleichungen lauten:
+
+	\[\textstyle \nabla \times \vec E = -\frac{\partial \vec B}{\partial t}\quad \nabla \times \vec B = \vec j + \frac{\partial \vec E}{\partial t}\quad \nabla \cdot \vec E = \rho\quad 
+	\nabla \cdot \vec B = 0\]
+	
+	\noindent Überlegen Sie sich eine passende Formatierung und eine gute, übersichtliche Darstellung.\footnote{Die hier gezeigte Darstellung ist nicht optimal; sie sollen sich also explizit eine bessere überlegen.} Korrigieren Sie Abstände, falls nötig, wählen Sie eine gute und passende Schrift, überlegen Sie sich mögliche Auszeichnungsformen vektorieller Größen etc.
+	
+	Die nötigen Zeichen für diese Aufgabe finden Sie in der Datei |symbols-a4|\footnote{\texttt{texdoc symbols-a4}} oder mit dem \href{http://detexify.kirelabs.org/classify.html}{Detexify-Tool}.\footnote{\url{http://detexify.kirelabs.org/classify.html}}
+	
+	\abgabe{Den Quelltext per Mail und als Ausdruck.}
+\end{question}
+
+\newsavebox{\SolutionCodeA}
+\begin{lrbox}{\SolutionCodeA}
+\begin{minipage}{\textwidth}
+Eine Möglichkeit der Auszeichnung von Vektoren wäre der Fettdruck mittels |\pmb| aus dem |amsmath|-Paket. Eine Schöne Dartsellung der vier Formeln kann man mit der |align|-Umgebung erreichen:
+\begin{LTXexample}
+\begin{align*}
+  \nabla \times \pmb E &= -\frac{\partial \pmb B}{\partial t} &
+  \nabla \times \pmb B &= \pmb j + \frac{\partial \pmb E}{\partial t}\\
+  \nabla \cdot \pmb E &= \rho &
+  \nabla \cdot \pmb B &= 0
+\end{align*}
+\end{LTXexample}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeA
+\end{solution}
+
+
+\begin{question}[subtitle=Integrale]{3}
+	Ein befreundeter Mathematiker hat eine eine großartige neue Theorie aufgestellt, die mit folgendem Integral-Konstrukt notiert wird:
+	\begin{center}
+		\includegraphics{03komischeintegrale} % Das habt Ihr Euch wohl so gedacht ;-)
+	\end{center}
+	Helfen Sie Ihrem Mathematiker-Freund beim Setzen seiner Theorie und bauen Sie das seltsame Integral aus vorhandenen Integralsymbolen in \hologo{pdfLaTeX} nach.
+
+	\noindent\emph{Tipp:} Suchen Sie in |symbols-a4| nach |txfonts/pxfonts| und benutzen Sie den \texttt{\textbackslash kern}-Befehl um horizontale Abstände zu verändern.
+	\abgabe{Den Quelltext per Mail, das fertige PDF als Ausdruck.}
+\end{question}
+
+\newsavebox{\SolutionCodeB}
+\begin{lrbox}{\SolutionCodeB}
+\begin{minipage}{\textwidth}
+Das Integral-Konstrukt kann mit folgendem Code erzeugt werden:
+\begin{lstlisting}
+\documentclass{minimal}
+  \usepackage{amsmath,pxfonts}
+\begin{document}
+  \begin{displaymath}
+    \oint\kern.15em\vec\varoiintctrclockwise\kern-2.60em\varoiintclockwise
+  \end{displaymath}
+\end{document}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeB
+\end{solution}
+
+
+\newsavebox{\QuestCodeC}
+\begin{lrbox}{\QuestCodeC}
+\begin{minipage}{\textwidth}
+\begin{lstlisting}
+\[ a =
+  \begin{cases}
+	  b & b > 0 \\
+    -b & b < 0\\
+    0 & b = 0
+  \end{cases} 
+\]
+\end{lstlisting} 
+\end{minipage}
+\end{lrbox}
+
+\begin{question}[subtitle=Fallunterscheidungen mit Cases]{3}
+	Die Umgebung |cases| ermöglicht den Satz von Fallunterscheidungen:
+	\\\noindent\usebox\QuestCodeC\\
+	Das \emph{muss} zwar im Mathesatz passieren, kann aber auch für Textinhalte (im Mathemodus mit \texttt{\textbackslash text\{normaler Text\}} zu setzen) nützlich sein. Alternativ kann man auch eine |matrix|-Umgebung verwenden und die nötige Klammer von Hand (z.\,B. \texttt{\textbackslash left(}) setzen. Verwenden Sie nun letzteres, um zwei Formeln aus dem tractatus philosophicus in folgender Form zu setzen:
+	\begin{displaymath}
+		\text{tractatus philosophicus, Satz 6.}
+		\begin{cases}
+			03:\hspace*{0.65em} [o,\xi, \xi +1]\\
+			231:\ 1+1+1+1 = (1+1) + (1+1)
+		\end{cases}
+	\end{displaymath}
+	\abgabe{Den Quelltext per Mail, das fertige PDF als Ausdruck.}
+\end{question}
+
+\newsavebox{\SolutionCodeC}
+\begin{lrbox}{\SolutionCodeC}
+\begin{minipage}{\textwidth}
+Man muss |\left\{| und |\right.| verwenden um die |cases|-Umgebung zu emulieren. Die Umgebung |matrix*| aus dem |mathtools|-Paket erlaubt es, durch Angabe des optionalen Parameters |[l]|, den Inhalt der Matrix linksbündig zu setzen.
+\begin{lstlisting}
+\begin{displaymath}
+  \text{tractatus philosophicus, Satz 6.}
+  \left\{
+  \begin{matrix*}[l]
+    03:\hspace*{0.65em} [o,\xi, \xi +1]\\
+    231:\ 1+1+1+1 = (1+1) + (1+1)
+  \end{matrix*}
+  \right.
+\end{displaymath}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeC
+\end{solution}
+
+
+
+\end{document}

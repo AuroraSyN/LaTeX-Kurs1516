@@ -1,0 +1,433 @@
+% !TEX program = lualatex
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	hologo,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	pgfplots,
+	xspace,
+}
+
+\usepackage{
+	booktabs,
+	blindtext,
+	subfloat,
+	wrapfig,
+	floatflt,
+	picinpar,
+}
+
+
+\setmainlanguage{german}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+%\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+\setmonofont[Scale=.99]{Anonymous Pro}
+
+%\renewcommand{\sfdefault}{\rmdefault}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{shapes, arrows, trees}
+
+\pgfplotsset{
+	compat=1.3,
+	width=7cm,
+	lua backend=true,
+}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\alert{\texttt{#1}}}}
+\newcommand{\TikZ}{Ti\textit{k}Z}
+\newcommand{\BibTeX}{Bib\TeX}
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.8\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann with credit to Arno Trautmann},
+}
+
+\lstloadlanguages{TeX}
+\lstset{%
+	language=TeX,
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+}
+
+
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Bibliografien und mehrsprachiger Satz}
+\author[Mo]{Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{11. Dezember 2015}
+
+
+\begin{document}
+\MakeShortVerb|
+
+\frame{\titlepage}
+
+\begin{frame}{Übersicht}
+	\tableofcontents
+\end{frame}
+
+\section{Bibliografie}
+\begin{frame}[fragile]{Bibliografie}
+\begin{itemize}
+	\item Bibliografie enthält Liste verwendeter Quellen und ggf. weiterführende Literatur.
+	\item je nach Fachbereich unterschiedliche Zitierstile
+	\item (grobes) Aussehen der Bibliografie wird von Dokumentenklasse bestimmt.
+	\item bestimmte Syntax zum Setzen der Bibliografie:
+	\begin{itemize}
+		\item Umbegung |\begin{thebibliography}{|\meta{Anzahl}|}|
+		\item Aufzählung der Werke mittels |\bibitem{|\meta{Key}|}| \meta{Text}
+		\item Zitieren eines Werks mit |\cite{|\meta{Key(s)}|}| oder |\cite[|\meta{Seite}|]{|\meta{Key}|}|
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,t]{Bibliografie}
+\begin{lstlisting}
+\begin{thebibliography}{9}
+  \bibitem{frankfurt05} Harry G. Frankfurt:
+    \textit{On Bullshit}, Princeton University Press,
+    Princeton, New Jersey, 2005.
+\end{thebibliography}
+\end{lstlisting}
+\vfill
+\pause
+\begin{itemize}
+	\item manuelles Erstellen (und Sortieren) der Bibliografie ist sehr umständlich
+	\item Einträge nicht sinnvoll wiederverwendbar
+	\pause
+	\item[⇒] Programm \BibTeX\ übernimmt Sortierung und Verwaltung der Einträge
+\end{itemize}
+\end{frame}
+
+\subsection{\BibTeX}
+\begin{frame}[fragile]{\BibTeX-Idee}
+	\begin{itemize}
+		\item Einträge liegen als Textdatei (|.bib|) in vorgegbener Syntax vor
+		\item Referenz im Dokument mit |\cite{mittelbach2004}|\pdfmarginpar{Wenn man will, dass nicht zitierte Referenzen in der Bibliografie auftauchen kann man diese mit nocite{} hinzufügen. nocite{*} fügt alle Items in der .bib-Datei ein.}
+		\item Programm \BibTeX\ fügt referenzierte Quelle automatisch in Bibliografie ein
+		\item Aussehen der Referenz und Bibliografieeinträge vielfältig einstellbar
+		\item Zugriff auf große Menge an verfügbaren Referenzen
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\BibTeX}
+	\begin{itemize}
+		\item Verwendung unintuitiv
+		\item graphische Oberflächen erleichtern das Leben
+		\item z.\,B. jabref, citavi, etc.
+		\item direkte online-Suche z.\,B. bei \url{https://scholar.google.de}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Pakete}
+	Gestaltung der Bibliographie mittels Paketen:
+	\begin{description}
+		\item[\pkg{natbib}] numerische [13] oder Author-Year (Tolkien, 1954) Zitierstile (und Varianten)
+		\item[\pkg{jurabib}] Zitierstile für Jura (und Humanities)
+		\item[\pkg{inlinebib}] für Zitate in Fußnoten
+		\item …\pause
+		\item[\pkg{biblatex}] vielfältigste Gestaltungsmöglichkeiten (empfohlen)
+\end{description}\vfill
+Programm \pkg{biber} als Nachfolger von \BibTeX\ für \pkg{biblatex}
+\end{frame}
+
+\subsection{natbib}
+\begin{frame}[fragile,shrink]{Erstellung der Bibliografie}{|natbib|}
+\begin{block}{im Dokument}
+\begin{lstlisting}
+\usepackage[optionen]{natbib}
+\begin{document}
+  \bibliographystyle{plainnat} % oder andere ...
+  Text ... \cite{Tolkien54} ... text.
+  \bibliography{Bib-Datei}
+\end{document}
+\end{lstlisting}
+\end{block}
+\begin{block}{in der .bib-Datei}
+\begin{lstlisting}
+@book{Tolkien54,
+  author    ={Tolkien, John R. R.},
+  title     ={The Lord of the Rings},
+  publisher ={Allen & Unwin},
+  address   ={London},
+  year      ={1954},
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Setzten der Bibliografie}{\BibTeX}
+\begin{block}{in der Konsole}
+\begin{verbatim}
+$ xelatex dokument.tex
+$ bibtex dokument.aux
+$ xelatex dokument.tex
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile, shrink]{Zitierbefehle}{|natbib|}
+\small\hspace*{-1cm}
+\begin{tabular}{lp{3.5cm}l}
+\bf Befehl & \bf Ausgabe Author-Year & \bf Ausbgabe numerisch \\ \midrule
+|\citet{jon90}|	&	Jones et al. (1990)	&	Jones et al. [21]	\\
+|\citet[chap.~2]{jon90}|	&	Jones et al. (1990, chap. 2)	&	Jones et al. [21, chap. 2]	\\\\
+|\citep{jon90}|	&	(Jones et al., 1990)	&	[21]	\\
+|\citep[chap.~2]{jon90}|	&	(Jones et al., 1990, chap. 2)	&	[21, chap. 2]	\\
+|\citep[see][]{jon90}|	&	(see Jones et al., 1990)	&	[see 21]	\\
+|\citep[see][chap.~2]{jon90}|	&	(see Jones et al., 1990, chap. 2)	&	[see 21, chap. 2]	\\\\
+|\citet*{jon90}|	&	Jones, Baker, and Williams (1990)	&		\\
+|\citep*{jon90}|	&	(Jones, Baker, and Williams, 1990)	&		\\\\
+|\citep{jon90a,jon90b}|	&	(Jones et al., 1990a,b)	&	[21, 32]
+\end{tabular}
+\end{frame}
+
+\subsection{biblatex}
+\begin{frame}{Bibliografien mit biblatex}%{|biblatex|}
+\begin{itemize}
+\item sämtliche Layouteinstellungen über reine \LaTeX-Makros definiert
+\item andere Syntax als die „alten“ Pakete (verwenden \BibTeX-Code)
+\item Einstellungen über Paketoptionen\\(siehe \pkg{biblatex}-Dokumentation, Abschn. 3: User Guide)
+\item Möglichkeit zur Erstellung mehrerer Bibliografien\\(z.\,B. je Kapitel, oder automatisch nach bestimmten Kriterien)
+\end{itemize} 
+\end{frame}
+
+\begin{frame}[fragile]{Erstellung der Bibliografie}{|biblatex|}
+\begin{block}{im Dokument}
+\begin{lstlisting}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{bibfile.bib}
+\begin{document}
+  Text  ... \cite{Tolkien54} ... text.
+  \printbibliography
+\end{document}
+\end{lstlisting}
+\end{block}
+\begin{block}{in der Konsole}
+\begin{verbatim}
+$ xelatex dokument.tex
+$ biber dokument.bcf
+$ xelatex dokument.tex
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile, shrink]{Zitier- und Bibliografiestile}{|biblatex|}
+\begin{itemize}
+\item \pkg{biblatex} unterstützt viele vordefinierte Stile:
+\item |\usepackage[style=|\meta{Stil}|]{biblatex}|
+\end{itemize}
+\begin{description}
+\item[|numeric|] Standard-Stil \hfill [1, 2, 4, 3, 7]
+\item[|numeric-comp|] Kompakte Version von |numeric| \hfill [1-4, 7]
+\item[|alphabetic|] Abkürzungen von Autor und Jahr \hfill [Jon95] [JW86] 
+\item[|authoryear|] Autor-Jahr-Stil \hfill Jones 1995 
+\item[|authoryear-ibid|] Mehrfachnennungen auf einer Seite werden mit \emph{ebd.} abgekürzt
+\end{description}
+\begin{itemize}
+\item Bibliografiestil wird dem Zitierstil angepasst
+\item kann mit |citestyle=| und |bibstyle=| verändert werden
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\section{Geschicktes Kompilieren}
+\subsection{Makefiles}
+\begin{frame}{Makefiles}
+\begin{itemize}
+\item  ToDo
+\end{itemize}
+\end{frame}
+
+\subsection{latexmk}
+
+
+
+\section{Mehrsprachige Dokumente}
+\subsection{babel}
+\begin{frame}[fragile]{Mehrsprachigkeit mit |babel|}{Sprachen laden}
+\pkg{babel} kann mit mehreren Sprachen als Paketoption geladen werden, letzte Sprache ist Hauptsprache:
+\begin{lstlisting}
+\usepackage[dutch,ngerman]{babel}
+\end{lstlisting}
+Alternativ: Angabe mit |main=|\meta{Srache}
+\begin{lstlisting}
+\usepackage[main=ngerman,dutch]{babel}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrsprachigkeit mit |babel|}{Sprache Umschalten}
+
+\end{frame}
+
+
+\subsection{polyglossia}
+\begin{frame}[fragile]{Mehrsprachigkeit mit |polyglossia|}{Sprachen laden}
+	|\setmainlanguage[|\meta{Optionen}|]{|\meta{Sprache}|}|
+	|\setotherlanguage[|\meta{Optionen}|]{|\meta{Sprache}|}|
+	|\setotherlanguages{|\meta{Sprachen}|}|\\[1em]
+	\begin{center}
+		\scriptsize
+		\begin{tabular}{*{5}{l}}
+			\multicolumn{5}{l}{\normalsize Vefügbare Sprachen:}\\
+			\toprule
+			albanian & danish & icelandic & nko & slovenian\\
+			amharic & divehi & interlingua & norsk & spanish\\
+			arabic & dutch & irish & nynorsk & swedish\\
+			armenian & english & italian & occitan & syriac\\
+			asturian & esperanto & kannada & piedmontese & tamil\\
+			bahasai & estonian & khmer & polish & telugu\\
+			bahasam & farsi & korean & portuges & thai\\
+			basque & finnish & lao & romanian & tibetan\\
+			bengali & french & latin & romansh & turkish\\
+			brazil[ian] & friulan & latvian & russian & turkmen\\
+			breton & galician & lithuanian & samin & ukrainian\\
+			bulgarian & german & lsorbian & sanskrit & urdu\\
+			catalan & greek & magyar & scottish & usorbian\\
+			coptic & hebrew & malayalam & serbian & vietnamese\\
+			croatian & hindi & marathi & slovak & welsh\\
+			czech \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrsprachigkeit mit |polyglossia|}{Sprache Umschalten}
+Befehl |\text|\meta{Sprache}|{|Text|}| für einzelne Wörter\\
+Umgebung |\begin{|\meta{Sprache}|}| für längere Passagen
+\vfill
+\begin{lstlisting}
+% in der Präambel:
+\setmainlanguage{english}
+\setotherlanguage{french, greek}
+
+% im Dokument:
+The document body is in English, but single words can be in \textgreek{ ελληνικά} or \textfrench{français}.
+
+\begin{french}
+  Il est également possible d'écrire des phrases entières en français.
+\end{french}
+\end{lstlisting}
+\end{frame}
+
+\subsection{bidi}
+\begin{frame}[fragile]{Unterschiedliche Textrichtungen}
+\hologo{XeTeX} unterstützt wechselnde Textrichtungen innerhalb eines Dokuments mit dem Paket \pkg{bibi} (wird von \pkg{polyglossia} automatisch geladen)
+\begin{lstlisting}
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\setotherlanguage{arabic}
+\begin{document}
+  Ein Satz auf Deutsch.
+  \begin{Arabic}
+
+  \end{Arabic}
+\end{document}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Weiterführende Literatur}
+	\begin{thebibliography}{9}
+		\bibitem{biblatex} \textsc{Philipp Lehman}:
+			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf}{„The Biblatex Package“}}, 
+			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf}{\texttt{texdoc biblatex}}}.
+	\end{thebibliography}
+\end{frame}
+
+
+\end{document}

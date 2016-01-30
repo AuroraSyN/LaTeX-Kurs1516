@@ -1,0 +1,181 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\usepackage{fontspec}
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.85]{Inconsolata}
+
+\usepackage{
+	booktabs,
+	caption,
+	enumitem,
+	exsheets,
+	exsheets-listings,
+	geometry,
+	hologo,
+	lastpage,
+	mathtools,
+	microtype,
+	pgfplots,
+	scrlayer-scrpage,
+	shortvrb,
+	siunitx,
+	subcaption,
+	subfloat,
+	tikz,
+	xspace,
+	hyperref,
+}
+\newif\ifdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blattnr}{8}
+\newcommand{\ausgabetermin}{04.12.2015}
+\newcommand{\abgabetermin}{11.12.2015}
+\draftfalse
+\SetupExSheets{solution/print=false}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper,vmargin=3cm,head=26.0pt}
+\frenchspacing
+\reversemarginpar
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\pagestyle{scrheadings}
+\KOMAoptions{
+	headtopline = 1pt,
+	headsepline = .6pt,
+	footsepline = .6pt,
+}
+\setkomafont{pagehead}{\normalfont\small\sffamily}
+\setkomafont{pagefoot}{\small\itshape}
+\ihead{Einführung in das\\Textsatzsystem \LaTeX}
+\chead{\bfseries Übungsblatt \blattnr}
+\ohead{Ausgegeben: \ausgabetermin\\Abgabe: \abgabetermin}
+\ifoot{Heidelberg, WS 2015}
+\cfoot{}
+\ofoot{Seite~\thepage~von~\pageref{LastPage}}
+
+\MakeShortVerb{|}
+\lstset{%
+	backgroundcolor=\color[rgb]{.9 .9 .9},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	language=[LaTeX]TeX,
+	commentstyle=,
+	keywordstyle=,
+	identifierstyle=,
+	tabsize=2,
+	captionpos=b,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=0,
+	numberfirstline=false,
+	frame=single
+}
+\ifdraft
+	\AtBeginDocument{\centerline{%
+   	\color{red}\Large \sffamily Vorläufige Version}%
+		\vspace*{1ex}%
+	}
+\fi
+\newcommand{\abgabe}[1]{\par\noindent\textit{Abgabe:} #1}
+\DeclareRobustCommand*\questionstar{\texorpdfstring{\bonusquestionsign}{* }}
+\DeclareRobustCommand*\bonusquestionsign{\llap{$\bigstar$\space}}
+\NewQuSolPair
+	{question*}[name=\questionstar Bonusaufgabe]
+	{solution*}[name=\questionstar Lösung]
+\DeclareInstance{exsheets-heading}{myblock}{default}{
+	title-pre-code = \sffamily,
+	number-pre-code =  \sffamily\bfseries~\blattnr.,
+	subtitle-pre-code = \upshape\sffamily\bfseries:~,
+	points-pre-code = \itshape,
+	join = {
+		number[r,vc]subtitle[l,vc](0pt,0pt);
+		title[r,vc]number[l,vc](0pt,0pt);
+	} ,
+	attach = { 
+		main[l,vc]title[l,vc](0pt,0pt);
+		main[r,vc]points[r,vc](0pt,0pt);
+	},
+}
+\SetupExSheets{
+	counter-format = qu[1],
+	headings = myblock,
+}
+\SetupExSheets[points]{
+	name = {\,Punkt/e},
+	bonus-name = {Bonuspunkt/e},
+}
+
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\texttt{#1}}}
+\newcommand{\TikZ}{Ti\textit{k}Z\xspace}
+
+\usetikzlibrary{matrix}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\DeclareMathOperator{\Coker}{Koker}
+\DeclareMathOperator{\Ker}{Ker}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\begin{question}[subtitle=Struktur eines umfangreichen Dokuments]{6}
+	Laden Sie sich die Datei \href{http://latexkurs.de/uebungen/08_projekt.zip}{\texttt{08\_projekt.zip}} von der Vorlseungsseite herunter. Es handelt sich dabei um vier |.tex|-Dateien, die zu einem (noch unfertigen) größeres \LaTeX-Projekt gehören. Stellen Sie sich vor, es handele sich zum Beispiel um Ihre Bachelor- oder Masterarbeit.
+	
+	Ordnen Sie die Dateien in einer sinnvollen Ordnerstruktur und kompilieren Sie das Dokument. Korrigieren Sie alles, was in diesem Dokument falsch gemacht wurde. Dabei zählt hier als \emph{falsch} auch mangelnde Orthographie, undurchdachte Namensgebung von Labels, ungeschickte Platzierungen von Inhalten etc. Mit dem so korrigierten Dokument können Sie in Aufgabe 2 weiterarbeiten.
+
+	Falls Sie den \TeX works-Editor verwenden, können Sie auch die Fähigkeit von |TEX root| testen.
+	
+	\abgabe{Ordner mit Quelldateien als zip-Archiv per Mail, handschriftliche Skizze Ihrer Ordnerstruktur.}
+\end{question}
+
+
+
+\begin{question}[subtitle=Erweiterung des Dokuments]{6+6}
+Dem Projekt in Aufgabe 1 fehlen noch wesentliche Elemente, die Sie hier ergänzen sollen:
+\begin{enumerate}[label=\alph*)]
+\item Verwenden Sie den |\textbackslash maketitle|-Mechanismus und die dazugehörigen Befehle der  KOMA-Klassen um eine Titelei anzulegen. Geben Sie dem Dokument einen Schmutztitel, eine Titelseite und außerdem ein Inhaltsverzeichnis. Alle Elemente (wie Titel, Autor, …) können Sie frei wählen.
+\item Erstellen Sie einen Anhang (Schalter |\textbackslash appendix|) der ein Abbildungs- und ein Tabellenverzeichnis enthält.
+\end{enumerate}
+Die Folgenden Aufgabenteile sind freiwillig und werden mit bis zu 6 Bonuspunkten belohnt.
+\begin{enumerate}[resume,label=\alph*)]
+\item Erstellen Sie im Anhang außerdem einen Index, der mindestens drei Begriffe enthält, die jeweils mindestens auf drei verschiedenen Seiten vorkommen. Überlegen Sie sich, ob Sie lieber mit |makeidx|, |xeindex| oder |multind| arbeiten wollen.
+\item Ergänzen Sie das Dokument um einige Listings von Codeschnipseln in der Programmiersprache mit der Sie am häufigsten Arbeiten. Nutzen Sie – falls verfügbar – eine automatische Syntaxhervorhebung für diese Sprache. Fügen Sie im Anhang ein Code-Verzeichnis (List of Listings) ein.
+\item Fügen sie weitere Elemente Ihrer Wahl hinzu! Erinnern Sie sich, was in der Vorlesung besprochen wurde, oder überlegen Sie sich, was sie in Ihrer eigenen Abschlussarbeit benötigen könnten.
+\end{enumerate}
+	\abgabe{Ordner mit Quelldateien als zip-Archiv per Mail, fertiges PDF per Mail, Ausdruck von Inhaltsverzeichnis, erster Textseite und ggf. dem Anhang (als representative Seiten Ihres Dokuments).\\ Wenn Sie Aufgabe 1 und  2 bearbeitet haben, geben Sie bitte eine gemeinsame Lösung ab!}
+\end{question}
+ 
+
+\newsavebox{\SolutionCodeA}
+\begin{lrbox}{\SolutionCodeA}
+\begin{minipage}{\textwidth}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeA
+\end{solution}
+
+
+
+
+\end{document}

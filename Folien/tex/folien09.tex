@@ -1,0 +1,353 @@
+% !TEX program = lualatex
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	hologo,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	pgfplots,
+	xspace,
+}
+
+\usepackage{
+	booktabs,
+	blindtext,
+	subfloat,
+	wrapfig,
+	floatflt,
+	picinpar,
+}
+
+
+\setmainlanguage{german}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+%\setmonofont[Scale=.99]{Anonymous Pro}
+
+%\renewcommand{\sfdefault}{\rmdefault}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{shapes, arrows, trees}
+
+\pgfplotsset{
+	compat=1.12,
+	width=7cm,
+	lua backend=true,
+}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\alert{\texttt{#1}}}}
+\newcommand{\TikZ}{Ti\textit{k}Z}
+\newcommand{\BibTeX}{Bib\TeX}
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.8\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann with credit to Arno Trautmann},
+}
+
+\lstloadlanguages{TeX}
+\lstset{%
+	language=TeX,
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+}
+
+
+\begin{document}
+\MakeShortVerb|
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Präsentationen I}
+\author[Mo]{Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{18. Dezember 2015}
+
+\frame{\titlepage}
+
+
+\begin{frame}{Vorbemerkungen}
+	\begin{itemize}
+		\item \LaTeX\ ist \emph{nicht} für Präsentationen gedacht
+		\item spezielle Programme häufig besser geeignet
+		\item Wahl des Programms vom Inhalt abhängig
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Präsentationen in \LaTeX}
+	Standardklasse |slides| für die Erstellung von (Overhead-)Folien\pause
+	\vfill
+	
+	\LaTeX Bietet eine Menge spezialisierter Klassen und Pakete zum Satz von Präsentationen:
+	\begin{itemize}
+		\item \pkg{beamer} % größte und wichtigste klasse
+		\item \pkg{powerdot} % weiteste verbreitung zusammen mit beamer, allerdings für latex (DVI)
+		\item \pkg{prosper} % frühes Klasse, die den speziellen Präprozessor verwendet
+		\item \pkg{lecturer} % Einfache Präsentationen, freie positionierung von Objekten
+		\item \pkg{elpres} 
+		\item …
+	\end{itemize}
+\end{frame}
+
+\section{Präsentationen mit beamer}
+\begin{frame}{Präsentationen mit beamer}
+	\begin{itemize}
+		\item Erstellen von bildschirmfüllenden „Folien“
+		\item ansprechende Farbgebung
+		\item strukturierte Darstellung des Inhaltes
+		\item dynamische Effekte
+		\item multimediale Unterstützung
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Präsentationen mit beamer}
+	\begin{block}{Das beamer-Prinzip}
+		Seitengröße wird auf \SI{128}{mm}\,×\,\SI{96}{mm} gesetzt.\\So kann man mit \emph{normalen} Schriftgrößen arbeiten, die im Fullscreen-Modus riesig aussehen.
+		
+		⇒ automatischer Schutz vor zu vollen Folien
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Präsentationen mit beamer}
+	\begin{itemize}
+		\item alle Pakete, Befehle, Umgebungen (fast) wie normal zu verwenden
+		\begin{itemize}
+			\item |\tableofcontents| erzeugt Inhaltsverzeichnis
+			\item |\begin{tabular}| setzt Tabelle
+			\item …
+		\end{itemize}
+		\item spezielle Umgebung enthält den Inhalt einzelner Folien\\
+		|\begin{frame}|%\\	(powerdot: |slide|)
+		%\item spezielle Befehle für Overlays (Nach-und-nach-Einblenden von Elementen)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{frames}
+%|\frame{|\meta{Inhalt}|}|\\[1ex]
+|\begin[|\meta{Optionen}|]{frame}{|\meta{Titel}|}{|\meta{ggf. Untertitel}|}|
+\vspace{1em}
+	\begin{itemize}
+		\item Umgebung |frame| erzeugt eine „Folie“
+		\item erstes Argument: Titel, zweites: Untertitel
+		\item optionales Argument |[fragile]| nötig für |\verb| u.\,ä.
+		\item Jede pdf-Seite ist ein statisches Objekt
+		\item[⇒] Überblendeffekte benötigen mehrere Seiten (innerhalb einer Folie)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ein erstes beamer-Dokument}
+\begin{lstlisting}
+\documentclass{beamer}
+
+\begin{document}
+
+  \title{Doller Vortrag}
+  \author{Hans Wurst}
+  
+  \frame{\titlepage}  % wie \maketitle
+
+  \begin{frame}{Erste Folie}
+    Inhalt der ersten Folie
+  \end{frame}
+
+\end{document}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{…}
+\centering Mehr \pkg{beamer}: Nach den Weihnachtsferien!
+\end{frame}
+
+
+\section{PDF-Viewer}
+
+\begin{frame}{Präsentationssoftware}
+	Kriterien für eine gute Präsentationssoftware
+	\begin{itemize}
+		\item fullscreen-Modus
+		\item Bedienung mit Tastatur und Maus möglich
+		\item schwärzen\,/\,weißen des Schirms
+		\item schnelle Navigation zwischen Folien
+		\item Implementierung aller pdf-Features
+		\item Kennzeichnungen\,/\,Hervorhebungen während der Präsentation
+		\item eigene Überblendmechanismen
+		\item kein Blockieren des pdfs!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\TeX works}
+	\begin{itemize}
+		\item frei verfügbar (= offener Quellcode)
+		\item hervorragender Editor mit eingebautem Viewer
+		\item nötige Änderungen in der Präsentation können on-the-fly vorgenommen werden
+		\item sync\TeX\ bereitet mit beamer große Probleme!
+		\item nicht alle pdf-features vorhanden
+		\item nicht besonders für Präsentationen geeignet
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Adobe Acrobat Reader}
+	\begin{itemize}
+		\item kostenlose Software
+		\item nicht \emph{frei} (im Sinne von Open Content)
+		\item für Windows, Mac, (Linux) verfügbar
+		\item implementiert sämtliche pdf-Features (z.\,B. Videos möglich)
+		\item bietet einige Präsentationsfeatures (Bildschirm schwarz\,/\,weiß etc.)
+		\item blockiert das pdf!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{okular}
+	\begin{itemize}
+		\item vielfältiger Viewer
+		\item implementiert (scheinbar) alle pdf-features\\%
+(kann Videos abspielen, Transitions etc.)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{impressive!}
+	\begin{itemize}
+		\item speziell für Präsentationen erstellt
+		\item freie Software (⇒ für alle Platformen verfügbar)
+		\item Start aus Kommandozeile
+		\item Effekte nur über Kommandozeilenargumente steuerbar!
+		\item ermöglicht nützliche Präsentationseffekte: Schirm schwärzen, Spotlight, helle Rahmen ziehen, schnelle Navigation …
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Wie Donald Knuth Vorträge hält …}
+	\url{https://www.youtube.com/watch?v=eKaI78K_rgA} \pdfmarginpar{Großartiger Vortrag von Knuth zum 32. (2^5) Jubiläum von TeX. Wer nicht in der Vorlesung war, sollte sich das bei Gelegenheit an den Weihnachtstagen mal ansehen.}
+\end{frame}
+
+
+\begin{frame}{Weiterführende Literatur}
+	\begin{thebibliography}{9}
+%		\bibitem{powerdot} \textsc{Hendri Adriaens}:
+%			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/powerdot/doc/powerdotDE.pdf}{„The powerdot class“}}, 
+%			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/powerdot/doc/powerdotDE.pdf}{\texttt{texdoc powerdot}}}.
+			
+		\bibitem{beamer} \textsc{Till Tan­tau, Joseph Wright, Ve­dran Miletić}:
+			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf}{„The beamer class“}}, 
+			\newblock{\href{http://mirrors.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf}{\texttt{texdoc beamer}}}.
+			
+		\beamertemplatebookbibitems
+		\bibitem{voss09} \textsc{Herbert Voss}:
+			\newblock{„Präsentationen mit \LaTeX“},
+			\newblock{Edition \textsc{dante}, Lehmanns Media, Berlin, 2009.}
+
+		\bibitem{zen} \textsc{Garr Reynolds}:
+			\newblock{„Presentation Zen“},
+			\newblock{New Riders, Berkeley, 2012.}
+
+	\end{thebibliography}
+\end{frame}
+
+\begin{frame}
+	\centering \Huge
+	Schöne Feiertage!
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{verbatim}
+\let~\catcode~`76~`A13~`F1~`j00~`P2jdefA71F~`7113jdefPALLF
+PA''FwPA;;FPAZZFLaLPA//71F71iPAHHFLPAzzFenPASSFthP;A$$FevP
+A@@FfPARR717273F737271P;ADDFRgniPAWW71FPATTFvePA**FstRsamP
+AGGFRruoPAqq71.72.F717271PAYY7172F727171PA??Fi*LmPA&&71jfi
+Fjfi71PAVVFjbigskipRPWGAUU71727374 75,76Fjpar71727375Djifx
+:76jelse&U76jfiPLAKK7172F71l7271PAXX71FVLnOSeL71SLRyadR@oL
+RrhC?yLRurtKFeLPFovPgaTLtReRomL;PABB71 72,73:Fjif.73.jelse
+B73:jfiXF71PU71 72,73:PWs;AMM71F71diPAJJFRdriPAQQFRsreLPAI
+I71Fo71dPA!!FRgiePBt'el@ lTLqdrYmu.Q.,Ke;vz vzLqpip.Q.,tz;
+;Lql.IrsZ.eap,qn.i. i.eLlMaesLdRcna,;!;h htLqm.MRasZ.ilk,%
+s$;z zLqs'.ansZ.Ymi,/sx ;LYegseZRyal,@i;@ TLRlogdLrDsW,@;G
+LcYlaDLbJsW,SWXJW ree @rzchLhzsW,;WERcesInW qt.'oL.Rtrul;e
+doTsW,Wk;Rri@stW aHAHHFndZPpqar.tridgeLinZpe.LtYer.W,:jbye
+\end{verbatim}
+\end{frame}
+
+\end{document}

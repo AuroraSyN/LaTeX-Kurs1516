@@ -1,0 +1,484 @@
+% !TEX program = xelatex
+% !TEX spellcheck = de_DE
+
+\documentclass{beamer}
+
+\newif\ifweb
+\webfalse
+\webtrue
+
+\usepackage{
+	dtklogos,
+	fontspec,
+	graphicx,
+	hologo,
+	mathtools,
+	microtype,
+	pdfmarginpar,
+	polyglossia,
+	qrcode,
+	shortvrb,
+	showexpl,
+	siunitx,
+	tikz,
+	pgfplots,
+	xspace,
+}
+
+\usepackage{
+	booktabs,
+	blindtext,
+%	simpsons,
+}
+
+\setmainlanguage{german}
+\setotherlanguage{english}
+
+
+\usepackage{comicneue,skull,CountriesOfEurope}
+\newfont{\cirth}{cirth scaled\magstep1}
+%\newfont{\ransom}{ransom10 scaled\magstep1}  % leider fehlen dazu die map-files
+\newfont{\dancers}{dancers scaled\magstep1}
+
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.95,AutoFakeSlant]{Inconsolata}
+%\setmonofont[Scale=.99]{Anonymous Pro}
+
+
+%% fancy-quotes %%%%%%%%%%%%%%
+	\usepackage{tikz}
+	\newcommand*\openquote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}“}}}
+	\newcommand*\closequote{\makebox(25,-22){\scalebox{7}{\fontspec{Linux Biolinum O}”}}}
+	\newcommand*{\OpenQuote}{\tikz[remember picture,overlay,xshift=-15pt,yshift=-10pt]
+	     \node (OQ) {\openquote};}
+	\newcommand*{\CloseQuote}{\tikz[remember picture,overlay,xshift=15pt,yshift=10pt]
+	     \node (CQ) {\closequote};}
+	\newenvironment{fancyquote}%
+	{\hspace{-1em}\begin{quote}\OpenQuote\vspace*{1ex}\\\hspace*{1em}\begin{minipage}{.835\textwidth}}
+	{\end{minipage}\vspace*{3.8ex}\\\hfill\CloseQuote\end{quote}}
+	\newcommand\quoted[1]{\null\hfill{\scriptsize\sf #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifweb\else\renewcommand{\pdfmarginpar}[2][]{\null}\fi
+
+%% overleaf %%%%%%%%%%%%%%%%%%
+\usetikzlibrary{calc}
+\tikzset{ href node/.style={alias=sourcenode,append after command={let \p1 = (sourcenode.north west),  \p2=(sourcenode.south east),\n1={\x2-\x1},\n2={\y1-\y2} in node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{#1}{\phantom{\rule{\n1}{\n2}}}}}}} % http://tex.stackexchange.com/a/36111
+\newcommand{\overleaf}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node [xshift=-1.2cm,yshift=1.5cm, href node={http://polr.me/#1}] at (current page.south east)
+		{
+			\scalebox{.55}{\parbox{4.1cm}{
+				In Overleaf ausprobieren:\\[.8ex]
+				\qrcode[height=4cm]{http://polr.me/#1}\\[1ex]
+				\url{http://polr.me/#1}
+			}}
+		};
+	\end{tikzpicture}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{shapes, arrows, trees}
+
+\pgfplotsset{
+	compat=1.12,
+	width=7cm,
+	lua backend=true,
+}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+	
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\alert{\texttt{#1}}}}
+\newcommand{\TikZ}{Ti\textit{k}Z}
+\newcommand{\BibTeX}{Bib\TeX}
+
+
+\newenvironment{olcol}{
+	\begin{columns}\begin{column}{.85\textwidth}
+}{
+	\end{column}\begin{column}{.108\textwidth}\relax\end{column}\end{columns}
+}
+
+\hypersetup{%
+  unicode=true,
+  pdfborder={000},
+  pdftitle={Einführung in das Textsatzsystem LaTeX},
+  pdfauthor={Moritz Brinkmann with credit to Arno Trautmann},
+}
+
+\lstloadlanguages{TeX}
+\lstset{%
+	language=TeX,
+	backgroundcolor=\color[RGB]{229, 229, 239},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	commentstyle=\color{blue},
+	keywordstyle=,
+	identifierstyle=,
+	captionpos=b,
+	numbers=none,
+	frame=lines,
+	frameround=ffff,
+	pos=r,
+	rframe={single},
+	explpreset={numbers=none}
+}
+
+\mode<presentation>{
+	\useinnertheme{circles}
+	\usecolortheme[rgb={0,0,.5}]{structure}
+	\usecolortheme{whale}
+	\usecolortheme{orchid}
+	\beamertemplatenavigationsymbolsempty
+	\setbeamercolor{alerted text}{fg=blue}
+	\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+}
+
+
+\begin{document}
+\MakeShortVerb|
+
+\title{Einführung in das Textsatzsystem \LaTeX{}}
+\subtitle{Briefe und Lebensläufe}
+\author[Mo]{Moritz Brinkmann\\\url{moritz.brinkmann@iwr.uni-heidelberg.de}}
+\date{18. Dezember 2015}
+
+\frame{\titlepage}
+
+\begin{frame}[c]
+\centering
+\huge\textcolor{blue}{Teil I}\\\LARGE Briefe
+\end{frame}
+
+\section{Briefe mit KOMA: scrlettr2}
+\subsection{Grundlegende Bedienung}
+
+\begin{frame}{scrlettr2: Grundidee}
+    \begin{itemize}
+		\item wie immer in \LaTeX: Trennung von Form und Inhalt
+		\item alle formalen Elemente werden per Makro gesetzt
+		\item Briefinhalt selbst wird direkt eingegeben
+		\item Positionierung von Elementen mittels Befehlen anpassbar
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{scrlettr2: neue Syntax}
+\LaTeX\ kennt folgende „Dinge“:
+    \begin{itemize}
+		\item Befehle (|\texttt{}|)
+		\item Umgebungen (|\begin{abstract} \end{abstract}|)
+		\item Zähler (|\thepage|)
+		\item Längen (|\pageheight=3cm|)
+		\item Optionen (einfacher Wert oder Key-Value: |ngerman|, |top=2cm|)
+	\end{itemize}
+KOMA-Skript erweitert dies um:
+    \begin{itemize}
+		\item Elemente (|\setkomafont{title}{\fontspec{Arno Pro}}|) \pause
+		\item \alert{Variablen} (nur in der Briefklasse \pkg{scrlettr2})
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Variablen in scrlettr2}
+    \begin{itemize}
+		\item Setzen von Variablen mittels |\setkomavar{|\meta{Variable}|}{|\meta{Wert}|}|
+		\item \alert{nicht zu verwechseln} mit |\KOMAoptions{}|
+		\item mögliche Elemente: (kleine Auswahl)
+	\end{itemize}
+
+\begin{tabular}{>{\ttfamily}ll}\toprule
+fromname & Absendername\\
+fromaddress & Absenderadresse\\
+fromemail & E-Mailadresse des Absenders\\\pause
+myref & Feld für „Mein Zeichen“\\
+specialmail & Versandart (Luftpost …)\\
+backaddressseparator & Trennzeichen in der Rücksendeadresse\\\bottomrule
+\end{tabular}\\[2ex]
+⇒ siehe |texdoc scrguide|
+\end{frame}
+
+\begin{frame}[fragile]{Setzen von Variablen}
+    \begin{itemize}
+		\item Variablen verfügen über \alert{Inhalt}:\\%
+\begin{lstlisting}
+\setkomavar{fromname}{Mustermann}
+\end{lstlisting}
+		\item aber auch über \alert{Bezeichnung}:\\%
+\begin{lstlisting}
+\setkomavar*{fromname}{Absender}  % statt: Von
+\end{lstlisting}
+		\item Kurzform:\\%
+\begin{lstlisting}
+\setkomavar{fromname}[Absender]{Musterfrau}
+\end{lstlisting}
+		\item Ausgabe:\\%
+Absender: Musterfrau
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Nutzen von Variablen}
+	\begin{itemize}
+		\item normalerweise werden Variablen nur gesetzt und von der Klasse genutzt
+		\item Dokumentklasse kümmert sich dann um alles
+		\item eigene Variablen können definiert werden
+		\item Verwendung mittels |\usekomavar|
+	\end{itemize}
+	\vfill
+|\newkomavar[|\meta{Bezeichnung}|]{|\meta{Name}|}|\\[1ex]
+|\usekomavar[|\meta{Formatierung}|]{fromname}| ⇒ |Musterfrau|\\
+|\usekomavar*[|\meta{Formatierung}|]{fromname}| ⇒ |Absender|\\[1ex]
+Dabei kann mit \meta{Formatierung} beliebiger Code ausgeführt werden\\
+(z.\,B. |\bfseries|, |\MakeUppercase|)
+\end{frame}
+
+\begin{frame}[fragile]{Beispiel}
+\begin{olcol}
+\begin{lstlisting}
+\documentclass{scrlttr2}
+
+\setkomavar{fromname}{Moritz Brinkmann}
+\setkomavar{fromaddress}{Sandhäuser Straße 15/1\\69124 Heidelberg}
+% Bitte nur Päckchen mit Geschenken schicken!
+
+\begin{document}
+
+  \begin{letter}{Prof. Dr. Dr. h.c. Bernhard Eitel\\Grabengasse 1\\69117 Heidelberg}
+    \opening{Sehr geehrter Herr Rektor,}
+      dies ist mein erster Brief.
+    \closing{Gruß}
+  \end{letter}
+  
+\end{document}
+\end{lstlisting}
+\end{olcol}
+\overleaf{tex1201}
+\end{frame}
+
+\begin{frame}[fragile]{Besonderheiten}
+    \begin{itemize}
+		\item \pkg{scrlettr2} unterscheidet sich in der Bedienung von anderen Klassen:
+		\item es werden erst Briefe gesetzt, wenn |\opening{}| angegeben wird! % was wiederum nur in |letter|-Umgebung vorkommen darf …
+		\item nur sehr wenige Elemente werden dort angegeben, wo sie verwendet werden
+		\item[⇒] sehr strikte Trennung von Form und Inhalt
+	\end{itemize}
+\end{frame}
+
+\subsection{Letter Class Options}
+\begin{frame}[fragile]{letter class option}
+    \begin{itemize}
+		\item Für standardisiertes Layout: immer gleiche Einstellungen
+		\item[\alert{⇒}] copy \& paste?
+		\item[\alert{⇒}] eigene |.cls| oder |.sty|-Datei?
+		\item[\alert{⇒}] eigene |.tex|?
+		\item[\alert{⇒}] Inkompatibilität, nicht gut portierbar\pause
+		\item[⇒] eigenes Format für \pkg{scrlettr2}: |.lco|-Dateien
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{letter class option}
+    \begin{itemize}
+		\item KOMA definiert bereits einige |.lco|-Dateien
+		\item einfache Definition eigener |.lco|
+		\item leichter Austausch\\%
+⇒ normierte Geschäftsbriefe möglich
+		\item nach Laden Anpassungen möglich\\%
+⇒ dem Zweck angepasstes, schönes Format
+		\item Verwendung: Als Klassenoption:\\%
+|\documentclass[|\meta{lco-Name}|]{scrlttr2}|\\%
+oder im Dokument\\%
+|\LoadLetterOption{|\meta{lco-Name}|}|
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{letter class option}
+\begin{table}
+\begin{tabular}{ll}\toprule
+DIN & gemäß DIN 676\\
+DINmtext & Alternative für mehr Text auf der ersten Seite\\
+KOMAold & Aussehen der alten \pkg{scrlettr}-Klasse\\
+NipponEL & japanische Briefe\\
+NipponEH & alternative japanische Briefe\\
+SN & schweizer Briefe nach SN 010 130 (Anschrift rechts)\\
+SNleft & dito, Anschrift links\\\bottomrule
+\end{tabular}
+\caption{einige Voreinstellungen für lco-Dateien}
+\end{table}
+Erstellen eigener |.lco|: siehe Dokumentation
+\end{frame}
+
+\subsection{Adressverwaltung}
+\begin{frame}[fragile]{Adressverwaltung}
+    \begin{itemize}
+		\item Eingabe von Adressen nervig, zeitaufwändig und fehleranfällig
+		\item Widerspricht dem Ansatz von \LaTeX
+		\item[⇒] |.adr|-Dateien verwalten Adressen
+		\item Einträge mit |\adrentry| bzw. |\addrentry|
+		\item Verwenden mit |\input{adressen.adr}|
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{adrentry vs. addrentry}
+    \begin{itemize}
+		\item |\adrentry| nimmt 8 Argumente
+		\item |\addrentry| nimmt 9 Argumente
+		\item letztes Argument definiert Befehl |\Kürzel|
+	\end{itemize}
+\begin{columns}
+\begin{column}{.1\textwidth}
+\begin{verbatim}
+\adrentry{Name}
+  {Vorname}
+  {Adresse}
+  {Telefon}
+  {frei1}
+  {frei2}
+  {Kommentar}
+  {Kürzel}
+\end{verbatim}
+\end{column}
+\begin{column}{.1\textwidth}
+\begin{verbatim}
+\addrentry{Name}
+  {Vorname}
+  {Adresse}
+  {Telefon}
+  {frei1}
+  {frei2}
+  {frei3}
+  {frei4}
+  {Kürzel}
+\end{verbatim}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{automatische Adressen}
+    \begin{itemize}
+		\item Verwendung im Brief:
+	\end{itemize}
+\begin{verbatim}
+\begin{letter}{\Kürzel}
+\opening{...}
+\end{letter}
+\end{verbatim}
+⇒ Setzt automatisch die Adresse, die zum Eintrag |Kürzel| gehört\\
+(z.\,B. |\ATRAUT|)
+\end{frame}
+
+\begin{frame}[fragile]{adrconv}
+    \begin{itemize}
+		\item damit die ganze Arbeit nicht nur im Brief steht:
+		\item Paket \pkg{adrconv} kann Adressverzeichnisse oder Telefonlisten erstellen
+		\item verwendet |\adrentry|, |\adrchar{E}| (wird von \pkg{scrlttr2} ignoriert)\\%
+oder eigene Datenbank
+		\item[⇒] |texdoc adrconv|
+	\end{itemize}
+\end{frame}
+
+\subsection{Serienbriefe}
+\begin{frame}[fragile]{Serienbriefe}
+    \begin{itemize}
+		\item „Missbrauch“ der Adressdatei:
+		\item umdefinieren von |\ad(d)rentry| als Briefanfang
+		\item[⇒] erstellt Brief an alle Einträge
+	\end{itemize}
+\pause
+\begin{verbatim}
+\renewcommand{\adrentry}[8]{%
+  \begin{letter}{#2 #1\\#3}
+    \opening{Sehr geehrte Geschäftsparnter,}
+    die nächste Sitzung findet morgen statt!
+    \closing{Hochachtungsvoll}
+  \end{letter}
+}
+\input{geschäftspartner.adr}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[c]
+\centering
+\huge\textcolor{blue}{Teil II}\\\LARGE Lebensläufe
+\end{frame}
+\section{Lebensläufe}
+\begin{frame}{Lebensläufe}
+    \begin{itemize}
+		\item professionelles Layout für Bewerbungen
+		\item häufig standardisiert
+		\item schlichtes Layout besser als überladenes
+		\item Farben dezent einsetzen!
+		\item Layout dem Zweck anpassen\\%
+(Wohnheim, Universität, Bestattungsinstitut, \dots)
+	\end{itemize}
+\end{frame}
+
+\subsection[europecv]{europecv – europäische Standards}
+\begin{frame}[fragile]{europecv}
+\begin{quotation}
+As of 11 March 2002 the European Commission has defined a common format for curricula vitæ. This
+class is an unofficial \LaTeX\ implementation of that format. Although primarily intended for users in the
+European Union, the class can be used for any kind of curriculum vitæ.
+\end{quotation}
+    \begin{itemize}
+		\item gute Dokumentation
+		\item schlichtes, „klassisches“ Layout
+		\item ausreichend formatierbar
+	\end{itemize}
+	\overleaf{tex1202}
+\end{frame}
+
+\subsection{moderncv – farbig \fontspec{DejaVu Sans Mono}☺}
+\begin{frame}[fragile]{moderncv}
+    \begin{itemize}
+		\item bietet ein modernes, lockeres Layout
+		\item \alert{keine} offizielle Dokumentation
+		\item[⇒] Beispieldokumente, README (|texdoc -s moderncv|)
+		\item[⇒] |moderncv.cls| ansehen
+	\end{itemize}
+	\overleaf{tex1203}
+\end{frame}
+
+\subsection{curve – Trennung in Rubrikdateien}
+\begin{frame}[fragile]{curve}
+    \begin{itemize}
+		\item Grundidee: Trennung von Hauptdokument (skeleton) und Inhalt
+		\item Inhalte (Rubriken) stehen in eigenen Datein
+		\item unterschiedliche |\flavor| möglich: \\%
+je nach Zweck angepasster Lebenslauf
+		\item Dateinamen: |name.flavorname.rubrikname|:\\%
+|sprachkenntnisse.mpi.tex|\\%
+|programmierkenntnisse.mpi.tex|\\%
+|grogrammierkenntnisse.dante.tex|
+		\item Einbinden mittels |\makerubric{dateiname}|
+	\end{itemize}
+	\overleaf{tex1204}
+\end{frame}
+
+\subsection{simplecv – kiss}
+\begin{frame}[fragile]{simplecv}
+    \begin{itemize}
+		\item einfacher und schichter, schnell zu erzeugender Lebenslauf
+		\item Setzen von Headern: |\leftheader{}\rightheader{}|
+		\item |\title|, |\maketitle| wie gewohnt
+		\item |\section| und |\subsection| zur Strukturierung
+		\item Aufzählungen in der |topic|-Umgebung
+		\item Bibliographie möglich!
+		\item Dokumentation am einfachsten über Suchfunktion von \pkg{texdoc}\\ (u.\,U. selbst kompilieren)
+	\end{itemize} 
+	\overleaf{tex1205}
+\end{frame}
+
+\subsection{cv4tw}
+\begin{frame}[fragile]{cv4tw}
+    \begin{itemize}
+		\item Lebenslauf-Klasse für die Web-2.0-Generation
+		\item Vielzahl von Social-Media-Icons
+		\item Skill-Level in $n$ von 5 Sternen
+		\item keine richtige Dokumentation, aber nette Beispiele (|texdoc -s v4tw|)
+	\end{itemize} 
+	\overleaf{tex1206}
+\end{frame}
+
+\end{document}

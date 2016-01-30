@@ -1,0 +1,312 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX spellcheck = de_DE
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia}
+\setmainlanguage{german}
+\usepackage{fontspec}
+\setsansfont{Linux Biolinum O}
+\setromanfont{Linux Libertine O}
+\setmonofont[Scale=.85]{Inconsolata}
+
+\usepackage{
+	booktabs,
+	caption,
+	enumitem,
+	exsheets,
+	exsheets-listings,
+	geometry,
+	hologo,
+	lastpage,
+	microtype,
+	scrlayer-scrpage,
+	shortvrb,
+	subcaption,
+	subfloat,
+	xspace,
+	hyperref,
+}
+\newif\ifdraft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\blattnr}{6}
+\newcommand{\ausgabetermin}{20.11.2015}
+\newcommand{\abgabetermin}{27.11.2015}
+\draftfalse
+\SetupExSheets{solution/print=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper,vmargin=3cm,head=26.0pt}
+\frenchspacing
+\reversemarginpar
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	urlcolor=blue,
+}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\pagestyle{scrheadings}
+\KOMAoptions{
+	headtopline = 1pt,
+	headsepline = .6pt,
+	footsepline = .6pt,
+}
+\setkomafont{pagehead}{\normalfont\small\sffamily}
+\setkomafont{pagefoot}{\small\itshape}
+\ihead{Einführung in das\\Textsatzsystem \LaTeX}
+\chead{\bfseries Übungsblatt \blattnr}
+\ohead{Ausgegeben: \ausgabetermin\\Abgabe: \abgabetermin}
+\ifoot{Heidelberg, WS 2015}
+\cfoot{}
+\ofoot{Seite~\thepage~von~\pageref{LastPage}}
+
+\MakeShortVerb{|}
+\lstset{%
+	backgroundcolor=\color[rgb]{.9 .9 .9},
+	basicstyle=\ttfamily\small,
+	breakindent=0em,
+	breaklines=true,
+	language=[LaTeX]TeX,
+	commentstyle=,
+	keywordstyle=,
+	identifierstyle=,
+	tabsize=2,
+	captionpos=b,
+	numbers=left,
+	numberstyle=\tiny,
+	stepnumber=0,
+	numberfirstline=false,
+	frame=single
+}
+\ifdraft
+	\AtBeginDocument{\centerline{%
+   	\color{red}\Large \sffamily Vorläufige Version}%
+		\vspace*{1ex}%
+	}
+\fi
+\newcommand{\abgabe}[1]{\par\noindent\textit{Abgabe:} #1}
+\DeclareRobustCommand*\questionstar{\texorpdfstring{\bonusquestionsign}{* }}
+\DeclareRobustCommand*\bonusquestionsign{\llap{$\bigstar$\space}}
+\NewQuSolPair
+	{question*}[name=\questionstar Bonusaufgabe]
+	{solution*}[name=\questionstar Lösung]
+\DeclareInstance{exsheets-heading}{myblock}{default}{
+	title-pre-code = \sffamily,
+	number-pre-code =  \sffamily\bfseries~\blattnr.,
+	subtitle-pre-code = \upshape\sffamily\bfseries:~,
+	points-pre-code = \itshape,
+	join = {
+		number[r,vc]subtitle[l,vc](0pt,0pt);
+		title[r,vc]number[l,vc](0pt,0pt);
+	} ,
+	attach = { 
+		main[l,vc]title[l,vc](0pt,0pt);
+		main[r,vc]points[r,vc](0pt,0pt);
+	},
+}
+\SetupExSheets{
+	counter-format = qu[1],
+	headings = myblock,
+}
+\SetupExSheets[points]{
+	name = {\,Punkt/e},
+	bonus-name = {Bonuspunkt/e},
+}
+
+\newcommand{\meta}[1]{\textcolor{gray}{$\langle$\texttt{\textsl{#1}}$\rangle$}}
+\newcommand{\pkg}[1]{\href{http://ctan.org/pkg/#1}{\texttt{#1}}}
+\newcommand{\TikZ}{Ti\textit{k}Z\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{question}[subtitle=Abbildungen]{6}
+Üben Sie den Umgang mit Abbildungen und Graphiken in einem Dokument anhand der folgenden Unteraufgaben:
+	\begin{enumerate}[label=\alph*)]
+		\item Schreiben Sie zunächst den Code, um ein Bild in ein Dokument einzufügen und testen Sie, ob das Bild im pdf zu sehen ist. Sie können ein beliebiges Bild verwenden, das in einer |figure|-Umgebung stehen sollte.
+		\item Testen Sie den Einfluss von Parametern bei der Bildeinbindung, speziell Parameter zur Skalierung und Rotation der Bilder. Geben Sie im fertigen Dokument mindestens zwei Parameter an.
+		\item Binden Sie nun ein weiteres Bild ein und verwenden Sie eines der „sub“-Pakete (\pkg{subcaption}, \pkg{subfloat}), damit beide Abbildungen eine einheitliche Numerierung bekommen (Abbildung 1a, Abbildung 1b o.\,ä.). Beide Bilder sollen sich dabei in einer Gleitumgebung befinden.
+		
+		Verwenden Sie zwei beliebige Bilder, jedes Bild soll dabei eine eigene Unterschrift bekommen; falls nötig, setzen Sie noch eine Gesamtbeschriftung für beide Bilder.
+		\item Erweitern Sie Ihr Dokument abschließend um Text, den Sie mittels des |\textbackslash blindtext|-Befehls aus dem \pkg{blindtext}-Paket eingeben. Denken Sie an das Laden von \pkg{babel}/\pkg{polyglossia} und eine Sprachangabe!
+
+		Schreiben Sie vor, zwischen und hinter die Abbildungen Text und testen Sie die Endausgabe, wenn Sie Parameter an die |figure|-Umgebungen anhängen (|[h]|,|[b]| oder |[t]|). Welche Effekte beobachten Sie? Notieren Sie dies handschriftlich auf Ihrer Abgabe.
+\end{enumerate}
+	\abgabe{Quellcode per Mail{,} Quellcode und fertiges Dokument ausgedruckt.}
+\end{question}
+ 
+
+\newsavebox{\SolutionCodeA}
+\begin{lrbox}{\SolutionCodeA}
+\begin{minipage}{\textwidth}
+	\begin{enumerate}[label=\alph*)]
+	\item Für diese Aufgabe wird das Paket \pkg{graphicx}/\href{http://ctan.org/pkg/graphics}{\texttt{s}} benötigt.
+		
+		Bilder sollten als Gleitobjekte verwendet werden und dementsprechen in einer \verb+figure+-Umgebung gesetzt werden. Der Befehl um Bilder einzubinden lautet: |\includegraphics[|\meta{Optionen}|]{|\meta{relativer Pfad zum Bild}|}|. Mithilfe optionaler Argumente kann man festlegen, wie das Bild gesetzt werden soll, z.\,B. wie es skaliert wird, welche Breite man verwendet, Rotation uvm. Natürlich sollten auch Bilder beschriftet werden, damit der Leser weiß, was er sich gerade ansieht. Wenn man später im Dokument auf das Bild verweisen will sollte man ebenfalls ein \emph{Label} verwenden.
+\begin{lstlisting}
+\begin{figure}
+  \centering
+  \includegraphics[
+    width=0.5\textwidth,
+    keepaspectratio=true,
+    angle=180
+  ]{teddy1}
+  \caption{Auf den Kopf gedrehter Teddy-Bär}
+  \label{fig:teddy}
+\end{figure}
+\end{lstlisting}
+	{
+	\centering
+	\fbox{Teddybär}
+	\captionof{figure}{Auf den Kopf gedrehter Teddy-Bär}
+	\label{fig:teddy}
+	}
+	\end{enumerate}
+\end{minipage}
+\end{lrbox}
+
+\newsavebox{\SolutionCodeB}
+\begin{lrbox}{\SolutionCodeB}
+\begin{minipage}{\textwidth}
+	\begin{enumerate}[label=\alph*)]\addtocounter{enumi}{1}
+
+	\item Um Abbildungen aufzuteilen gibt es zwei Möglichkeiten. Man verwendet eines der Pakete \verb+subcaption+ oder \verb+subfloat+.
+		
+		Das Paket \pkg{subfloat} fasst mehrere |figure|-Umgebungen zu einer Einheit zusammen und nummeriert diese einheitlich. Dabei kann durchaus Text zwischen den Gleitumgebungen stehen.
+\begin{lstlisting}
+\begin{subfigures}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.1\textwidth]{teddy2}
+    \caption{Vorderansicht}
+    \label{fig:teddyfront}
+  \end{figure}
+  Hier kann Text kommen
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.1\textwidth]{teddy3}
+    \caption{Hinterseite}
+    \label{fig:teddyback}
+  \end{figure}
+
+\end{subfigures}
+\end{lstlisting}
+
+%  \caption{Verschiedene Ansichten des Teddybären mit
+%    \texttt{subfigures}-Umgebung}
+%  \label{fig:cameraviewssubfig}
+
+	Das \pkg{subcaption}-Paket löst das Problem genau anders herum: Es definiert |subfigure|-Umgebungen innerhalb der |figure|-Umgebung. Dies erlaubt insbesondere eine gemeinsame Bildunterschrift.
+	
+\begin{lstlisting}
+\begin{figure}
+	\centering
+  \begin{subfigure}{.5\textwidth}
+	  \includegraphics[width=0.1\textwidth]{teddy3}
+    \caption{Vorderansicht}
+  \end{subfigure}
+  \begin{subfigure}
+    \includegraphics[width=0.1\textwidth]{teddy3}
+    \caption{Hinterseite}
+    \label{fig:teddyback}
+  \end{subfigure}
+  \caption{Teddy von vorne und hinten}
+\end{figure}
+\end{lstlisting}
+	\end{enumerate}
+\end{minipage}
+\end{lrbox}
+
+\newsavebox{\SolutionCodeC}
+\begin{lrbox}{\SolutionCodeC}
+\begin{minipage}{\textwidth}
+	\begin{enumerate}[label=\alph*)]\addtocounter{enumi}{2}
+
+		\item Hier sollte das Verhalten der optionalen Parameter \verb+[t]+, \verb+[h]+ und \verb+[b]+ von Gleitumgebungen untersucht werden. Die Auswirkung ist lediglich, dass das entsprechende Gleitobjekt oben (\verb+[t]+ für "top"), unten (\verb+[b]+ für "bottom") oder möglichst genau an die Position des Quellstlistings (\verb+[h]+ für "here") gesetzt wird. Darüber hinaus gibt es noch den Parameter |[p]|, der dafür sorgt, dass die Grafik nach Möglichkeit auf eine separate Seite mit Grafiken gesetzt wird.
+
+	\end{enumerate}
+\end{minipage}
+\end{lrbox}
+
+
+
+\begin{solution}
+\noindent\usebox\SolutionCodeA
+
+\noindent\usebox\SolutionCodeB
+
+\noindent\usebox\SolutionCodeC
+\end{solution}
+
+
+\clearpage
+
+\begin{question}[subtitle=Baum mit \TikZ]{6+6}
+	Das Makropaket \pkg{PGF} bietet mit dem Frontend \href{htp://ctan.org/pkg/tikz}{\TikZ} eine hervorragende Möglichkeit, qualitativ hochwerige Grafiken mit \TeX\ zu erstellen. In dieser Aufgabe sollen Sie sich ein wenig mit \TikZ befassen. Aufgrund der Vielseitigkeit und des Umfangs von \TikZ beschränken wir uns darauf einen Baum mit \TikZ zu malen. Bäume eignen sich, um hierarchische Daten darzustellen und kommen zum Beispiel in der Informatik häufig zum Einsatz.
+
+	\begin{enumerate}[label=\alph*)]
+		\item Erstellen Sie eine |tikzpicture|-Umgebung, in der Sie einen Baum anlegen. Konsultieren sie dazu die \TikZ-Dokumentation\footnote{|texdoc tikz|, durchsuchen Sie das Dokument nach „trees“.} oder suchen Sie im Internet nach Beispielen für Bäume. Ihr Baum soll mindestens den Umfang des Baums in Abbildung \ref{fig:tree} haben.
+	\end{enumerate}
+	Die folgenden Aufgaben sind freiwillig und Sie müssen nur diejenigen bearbeiten, von denen Sie glauben, dass Sie Ihnen Spaß machen, oder Sie etwas lernen werden. Sie können für die Bearbeitung bis zu 6 Bonuspunkte erhalten.
+	\begin{enumerate}[resume, label=\alph*)]
+		\item Ergänzen Sie Ihren Baum um weitere Ebenen und Verzweigungen. Achten Sie dabei darauf, dass sich die Beschriftungen der einzelnen Knoten nicht überschneiden und passen Sie die Abstände entsprechend an. Falls nötig können sie auch die gesamte Darstellung des Baums ändern und ihn z.\,B. nach rechts statt nach unten wachsen lassen.
+		
+		Wenn Ihnen Bierstile nicht ergiebig genug sind, können Sie mit Ihrem Baum auch etwas (beliebiges) anderes darstellen. Sie sollten nur keinen Baum abgeben, der weniger Ebenen und Knoten enthält als der in Abbildung \ref{fig:tree}.
+		
+		\item \TikZ bietet – wie viele \LaTeX-Pakete – die Möglichkeit, die Darstellung von etwas völlig zu verändern, ohne den Inhalt dafür bearbeiten zu müssen.
+		
+		Geben Sie Ihrem Baum ein ansprechendes Aussehen! Setzen Sie zum Beispiel Farben ein, oder zeichnen Sie Formen um die einzelnen Knoten. Wenn Sie Lust haben, können Sie sich mal die |mindmap|-Library ansehen und Ihren Baum damit in ein organisches Gebilde verwandeln. Wenn Sie durch die \TikZ-Anleitung scrollen, werden Sie viele Anregungen finden.
+		
+		Die Art und Weise Ihrer Darstellung sollte dabei aber zum Inhalt passen und nicht von ihm ablenken.
+	\end{enumerate}
+
+	\abgabe{Quellcode per Mail{,} Quellcode und fertiges Dokument ausgedruckt.}
+\end{question}
+
+
+\begin{figure}[]
+	\centering
+	\includegraphics{06tree}
+	\caption{Stammbaum einiger Bierstile}
+	\label{fig:tree}
+\end{figure}
+
+
+\newsavebox{\SolutionCodeD}
+\begin{lrbox}{\SolutionCodeD}
+\begin{minipage}{\textwidth}
+Der Baum in Abbildung \ref{fig:tree} wurde mit folgendem Code erstellt:
+\begin{lstlisting}
+\usetikzlibrary{trees}
+
+\begin{tikzpicture}[
+  edge from parent fork down,
+  level 1/.style={sibling distance=15em},
+  level 2/.style={sibling distance=6em},
+]
+  \node {Bier}
+    child {node {obergärig}
+      child {node {Alt}}
+      child {node {Kölsch}}
+      child {node {Weizen}}
+    }
+    child {node {untergärig}
+      child {node {Märzen}}
+      child {node {Pils}}
+    }
+  ;
+\end{tikzpicture}
+\end{lstlisting}
+\end{minipage}
+\end{lrbox}
+
+\begin{solution}
+\noindent\usebox\SolutionCodeD
+\end{solution}
+
+
+\end{document}
